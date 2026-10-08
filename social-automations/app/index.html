@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>SaaSprite Social Automations</title>
+  <style>
+    :root{--bg:#07111f;--bg2:#091725;--panel:#0d1c2c;--line:#223750;--text:#f6f8fb;--muted:#94a8bf;--brand:#39d98a;--danger:#ff6b6b;--shadow:0 22px 70px rgba(0,0,0,.30)}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,textarea,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+    .auth-shell{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr}
+    .auth-art{padding:64px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 20% 15%,rgba(57,217,138,.18),transparent 30%),radial-gradient(circle at 80% 85%,rgba(57,120,255,.12),transparent 28%),#06101c}
+    .logo-row{display:flex;align-items:center;gap:13px}.logo-dot{width:14px;height:14px;border-radius:50%;background:var(--brand);box-shadow:0 0 26px rgba(57,217,138,.8)}
+    .brand-name{font-size:1.05rem;font-weight:800;letter-spacing:.02em}.brand-name span{color:var(--brand)}
+    .eyebrow{font-size:.77rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);font-weight:800}
+    .auth-copy{max-width:620px}.auth-copy h1{font-size:clamp(2.7rem,6vw,5.7rem);line-height:.98;margin:10px 0 18px;letter-spacing:-.04em}.auth-copy p{color:var(--muted);font-size:1.08rem;max-width:560px}.auth-foot{font-size:.82rem;color:#60758d}
+    .auth-form-wrap{display:flex;align-items:center;justify-content:center;padding:34px}.auth-card{width:min(440px,100%);background:rgba(13,28,44,.9);border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:var(--shadow)}
+    .auth-card h2{font-size:1.55rem;margin:0 0 7px}.auth-card p{color:var(--muted);font-size:.91rem;margin:0 0 24px}
+    .field{margin-bottom:15px}.field label{display:block;margin:0 0 7px;color:#c8d3df;font-size:.82rem;font-weight:700}
+    input,textarea,select{width:100%;border:1px solid var(--line);background:#081522;color:var(--text);border-radius:12px;padding:11px 12px;outline:none}input:focus,textarea:focus,select:focus{border-color:#388566;box-shadow:0 0 0 3px rgba(57,217,138,.08)}textarea{min-height:108px;resize:vertical}
+    .btn{border:0;border-radius:12px;padding:10px 14px;background:var(--brand);color:#042113;font-weight:800}.btn.secondary{background:#172a40;border:1px solid var(--line);color:var(--text)}.btn.ghost{background:transparent;border:1px solid var(--line);color:#c8d4e2}.btn.danger{background:#3d2029;color:#ffc0c8;border:1px solid #6e3040}.btn.small{padding:7px 10px;font-size:.82rem}.btn.full{width:100%;padding:12px}.auth-error{margin-top:12px;color:#ff9ba5;font-size:.85rem}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#07131f;border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;z-index:3}.sidebar .logo-row{padding:8px 8px 22px}.nav{display:flex;flex-direction:column;gap:6px}.nav button{border:0;text-align:left;background:transparent;color:#8fa3ba;padding:11px 12px;border-radius:11px;font-weight:700}.nav button.active,.nav button:hover{background:#112338;color:#fff}.nav button.active{box-shadow:inset 3px 0 0 var(--brand)}
+    .sidebar-foot{margin-top:auto;padding:14px 8px;border-top:1px solid var(--line)}.user-email{font-size:.82rem;color:#cbd6e2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.user-role{font-size:.74rem;color:#6f859d;margin-top:3px}
+    .main{margin-left:250px;min-height:100vh}.topbar{height:72px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(7,17,31,.75);backdrop-filter:blur(12px);position:sticky;top:0;z-index:2}.top-title{font-weight:800}.top-sub{color:var(--muted);font-size:.8rem;margin-top:2px}
+    .account-pill{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#0d1b2a;padding:8px 11px;border-radius:13px}.account-avatar{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#1b8058,#1b5791);display:grid;place-items:center;font-weight:900}.account-name{font-size:.84rem;font-weight:800}.account-meta{font-size:.72rem;color:var(--muted)}
+    .content{padding:26px;max-width:1280px;margin:0 auto}.view{display:none}.view.active{display:block}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:22px}.page-head h2{font-size:1.6rem;margin:0}.page-head p{color:var(--muted);margin:5px 0 0;font-size:.91rem}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px}.card,.panel{background:rgba(13,28,44,.9);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.metric{padding:19px}.metric-label{font-size:.78rem;color:var(--muted);font-weight:700}.metric-value{font-size:2rem;font-weight:900;margin-top:7px}.metric-hint{font-size:.75rem;color:#667c93;margin-top:4px}
+    .grid-2{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.panel-head{padding:17px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head h3{margin:0;font-size:1rem}.panel-body{padding:18px}.connected{display:flex;align-items:center;gap:13px}.ig-icon{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);display:grid;place-items:center;font-weight:900}
+    .status{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:5px 9px;font-size:.75rem;background:rgba(57,217,138,.10);color:#7ce9ae}.status.paused{background:rgba(246,189,96,.1);color:#f7cc85}
+    .empty{padding:24px;border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--muted)}.automation-list{display:flex;flex-direction:column;gap:10px}.automation-row{padding:14px;border:1px solid var(--line);border-radius:14px;background:#0a1826}.automation-top{display:flex;justify-content:space-between;gap:12px}.automation-name{font-weight:800}.automation-meta{font-size:.8rem;color:var(--muted);line-height:1.45;margin-top:5px}.automation-actions{display:flex;gap:7px;margin-top:12px}
+    table{width:100%;border-collapse:collapse;font-size:.82rem}th,td{padding:10px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:#afbed0;font-weight:800}.ok{color:#77e7aa}.fail{color:#ff9aa4}.skip{color:#f6c97e}
+    .wizard-wrap{max-width:900px;margin:0 auto}.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}.step{padding:10px;border-radius:12px;border:1px solid var(--line);color:#7389a1;font-size:.79rem;font-weight:800;background:#0a1725}.step.active{border-color:#2c7d5c;color:#8aeab6;background:rgba(57,217,138,.07)}.step.done{color:#c4d2df}.wizard-card{background:#0d1c2c;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.wizard-body{padding:22px}.wizard-foot{padding:15px 22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.hint{color:#6f849b;font-size:.76rem;margin-top:5px}.toggle-row{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0 17px}.toggle{display:flex;align-items:center;gap:8px;color:#c9d4df;font-size:.86rem}.toggle input{width:auto}.review{display:grid;grid-template-columns:1fr 1fr;gap:12px}.review-item{padding:13px;border:1px solid var(--line);border-radius:12px;background:#0a1725}.review-key{font-size:.74rem;color:#758ba2;font-weight:800;text-transform:uppercase}.review-value{margin-top:5px;color:#d7e1eb;white-space:pre-wrap}
+    .settings-list{display:grid;grid-template-columns:1fr 1fr;gap:18px}.settings-card{padding:19px}.toast{position:fixed;right:22px;bottom:22px;z-index:10;max-width:420px;background:#102337;border:1px solid var(--line);padding:13px 15px;border-radius:13px;box-shadow:var(--shadow)}.toast.error{border-color:#7c3445;color:#ffc0c8}.mobile-nav{display:none}
+    @media(max-width:950px){.auth-shell{grid-template-columns:1fr}.auth-art{display:none}.sidebar{display:none}.main{margin-left:0}.mobile-nav{display:flex;gap:6px;overflow:auto;padding:8px 16px;border-bottom:1px solid var(--line);background:#07131f}.cards{grid-template-columns:1fr}.grid-2,.settings-list,.row,.review{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.topbar{padding:0 16px}.content{padding:18px}}
+  </style>
+</head>
+<body>
+<section id="authView" class="auth-shell">
+  <div class="auth-art">
+    <div class="logo-row"><div class="logo-dot"></div><div class="brand-name">SaaSprite <span>Social</span></div></div>
+    <div class="auth-copy"><div class="eyebrow">Social Automations</div><h1>Simple automation. Zero noise.</h1><p>Sign in to manage Instagram comment triggers, automatic replies, and private messages from one clean workspace.</p></div>
+    <div class="auth-foot">SaaSprite AI Technologies · Social Automations</div>
+  </div>
+  <div class="auth-form-wrap">
+    <div class="auth-card">
+      <div class="eyebrow">Welcome back</div><h2>Sign in</h2><p>Use your Social Automations account to continue.</p>
+      <form id="loginForm">
+        <div class="field"><label>Email</label><input id="loginEmail" type="email" required autocomplete="username" placeholder="you@company.com"></div>
+        <div class="field"><label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="••••••••"></div>
+        <button id="loginButton" class="btn full" type="submit">Sign in</button>
+        <div id="authError" class="auth-error hidden"></div>
+      </form>
+    </div>
+  </div>
+</section>
+<section id="appView" class="hidden">
+  <aside class="sidebar">
+    <div class="logo-row"><div class="logo-dot"></div><div class="brand-name">SaaSprite <span>Social</span></div></div>
+    <nav class="nav"><button data-view="overview" class="active">Overview</button><button data-view="automations">Automations</button><button data-view="activity">Activity</button><button data-view="settings">Settings</button></nav>
+    <div class="sidebar-foot"><div id="userEmail" class="user-email"></div><div id="userRole" class="user-role"></div><button id="logoutBtn" class="btn ghost small" style="margin-top:11px;width:100%">Sign out</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><div id="topTitle" class="top-title">Overview</div><div id="topSub" class="top-sub">Your Instagram automation workspace</div></div><div class="account-pill"><div class="account-avatar">IG</div><div><div id="accountName" class="account-name">Connecting…</div><div id="accountMeta" class="account-meta">Instagram Professional account</div></div></div></header>
+    <div class="mobile-nav"><button class="btn secondary small" data-view="overview">Overview</button><button class="btn secondary small" data-view="automations">Automations</button><button class="btn secondary small" data-view="activity">Activity</button><button class="btn secondary small" data-view="settings">Settings</button></div>
+    <div class="content">
+      <section id="view-connect" class="view">
+        <div class="page-head"><div><h2>Connect Instagram</h2><p>Connect the Instagram Professional account you want to automate.</p></div></div>
+        <div class="panel" style="max-width:760px">
+          <div class="panel-body" style="padding:28px">
+            <div class="connected" style="align-items:flex-start">
+              <div class="ig-icon">IG</div>
+              <div style="flex:1">
+                <div class="eyebrow">Step 1</div>
+                <h3 style="font-size:1.35rem;margin:7px 0 8px">Connect your Instagram account</h3>
+                <div class="top-sub" style="font-size:.92rem;line-height:1.65;margin-bottom:18px">
+                  Sign in with the Instagram Business or Creator account you want SaaSprite Social Automations to manage.
+                  You will approve access to your profile, comments, and messages. After the connection is complete,
+                  your posts and Reels will appear inside the automation setup.
+                </div>
+                <button id="connectInstagramBtn" class="btn">Connect Instagram</button>
+                <div class="hint" style="margin-top:11px">Personal Instagram accounts are not supported by the Meta professional-account API.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="view-overview" class="view active">
+        <div class="page-head"><div><h2>Overview</h2><p>See what is connected, what is active, and what happened recently.</p></div><button class="btn" data-new-automation>+ Create automation</button></div>
+        <div class="cards"><div class="card metric"><div class="metric-label">ACTIVE AUTOMATIONS</div><div id="metricActive" class="metric-value">0</div><div class="metric-hint">Currently listening for comments</div></div><div class="card metric"><div class="metric-label">TOTAL AUTOMATIONS</div><div id="metricTotal" class="metric-value">0</div><div class="metric-hint">Active and paused</div></div><div class="card metric"><div class="metric-label">PROCESSED COMMENTS</div><div id="metricProcessed" class="metric-value">0</div><div class="metric-hint">Recent successful activity</div></div></div>
+        <div class="grid-2">
+          <div class="panel"><div class="panel-head"><h3>Instagram connection</h3><span class="status">Connected</span></div><div class="panel-body"><div class="connected"><div class="ig-icon">IG</div><div><div id="overviewAccount" style="font-weight:850">Instagram</div><div id="overviewAccountMeta" class="top-sub">Professional account</div></div></div></div></div>
+          <div class="panel"><div class="panel-head"><h3>Quick start</h3></div><div class="panel-body"><div style="font-weight:800;margin-bottom:7px">Create your first automation</div><div class="top-sub" style="line-height:1.55;margin-bottom:14px">Choose a Reel or post, define the comment trigger, add public replies, then set the DM.</div><button class="btn" data-new-automation>Start setup</button></div></div>
+        </div>
+        <div class="panel" style="margin-top:18px"><div class="panel-head"><h3>Recent automations</h3><button class="btn ghost small" data-view="automations">View all</button></div><div class="panel-body"><div id="overviewAutomations" class="automation-list"></div></div></div>
+      </section>
+      <section id="view-automations" class="view"><div class="page-head"><div><h2>Automations</h2><p>Manage comment triggers and the actions that run after a match.</p></div><button class="btn" data-new-automation>+ New automation</button></div><div class="panel"><div class="panel-body"><div id="automationList" class="automation-list"></div></div></div></section>
+      <section id="view-activity" class="view"><div class="page-head"><div><h2>Activity</h2><p>Recent comments handled by your automations.</p></div><button id="refreshActivityBtn" class="btn secondary">Refresh</button></div><div class="panel"><div class="panel-body" style="overflow:auto"><table><thead><tr><th>Time</th><th>User</th><th>Comment</th><th>DM</th><th>Public reply</th><th>Status</th></tr></thead><tbody id="activityBody"></tbody></table></div></div></section>
+      <section id="view-settings" class="view"><div class="page-head"><div><h2>Settings</h2><p>Account connection and workspace access.</p></div></div><div class="settings-list"><div class="card settings-card"><div class="eyebrow">Instagram</div><h3 style="margin:8px 0">Connected account</h3><div id="settingsAccount" style="font-weight:850;margin-bottom:4px">Instagram</div><div id="settingsAccountMeta" class="top-sub"></div></div><div class="card settings-card"><div class="eyebrow">Account</div><h3 style="margin:8px 0">Signed in as</h3><div id="settingsUser" style="font-weight:850;margin-bottom:4px"></div><div id="settingsRole" class="top-sub"></div><button id="settingsLogoutBtn" class="btn ghost small" style="margin-top:14px">Sign out</button></div></div></section>
+      <section id="view-wizard" class="view">
+        <div class="page-head"><div><h2 id="wizardTitle">Create automation</h2><p>Set it up in four small steps.</p></div><button id="cancelWizardBtn" class="btn ghost">Cancel</button></div>
+        <div class="wizard-wrap">
+          <div class="stepper"><div class="step active" data-step-indicator="1">1 · Content</div><div class="step" data-step-indicator="2">2 · Trigger</div><div class="step" data-step-indicator="3">3 · Actions</div><div class="step" data-step-indicator="4">4 · Review</div></div>
+          <div class="wizard-card"><div class="wizard-body">
+            <div data-step-panel="1"><div class="field"><label>Automation name</label><input id="wName" placeholder="e.g. Reel — Price details"></div><div class="field"><label>Post / Reel</label><select id="wMedia"><option value="">Any post or reel</option></select><div class="hint">Choose one item to keep this automation specific to that content.</div></div></div>
+            <div data-step-panel="2" class="hidden"><div class="field"><label>Match type</label><select id="wMatchMode"><option value="exact">Exact phrase</option><option value="contains">Comment contains phrase</option><option value="any">Any comment</option></select></div><div class="field" id="triggerField"><label>Trigger phrases — one per line</label><textarea id="wTriggers" placeholder="تم&#10;تمام&#10;."></textarea><div class="hint">Example: when someone comments “تم”, run this automation.</div></div></div>
+            <div data-step-panel="3" class="hidden"><div class="toggle-row"><label class="toggle"><input id="wSendPublic" type="checkbox" checked> Send public reply</label><label class="toggle"><input id="wSendPrivate" type="checkbox" checked> Send private DM</label><label class="toggle"><input id="wActive" type="checkbox" checked> Activate after saving</label></div><div class="field" id="publicRepliesField"><label>Public replies — one per line</label><textarea id="wReplies" placeholder="تم إرسال التفاصيل على الخاص ✅&#10;وصلتك التفاصيل بالخاص 🙌&#10;شيك الخاص ✉️"></textarea><div class="hint">One reply will be selected at random for each matched comment.</div></div><div class="field" id="dmField"><label>Private DM</label><textarea id="wDmText" placeholder="أهلاً 👋 هاي التفاصيل اللي طلبتها…"></textarea></div></div>
+            <div data-step-panel="4" class="hidden"><div id="reviewGrid" class="review"></div></div>
+          </div><div class="wizard-foot"><button id="wizardBackBtn" class="btn ghost hidden">Back</button><div style="margin-left:auto;display:flex;gap:10px"><button id="wizardDeleteBtn" class="btn danger hidden">Delete</button><button id="wizardNextBtn" class="btn">Continue</button></div></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</section>
+<div id="toast" class="toast hidden"></div>
+<script>
+  const API_BASE="https://hwqndkrrqrqqdnhhdjom.supabase.co/functions/v1/instagram-admin";
+  const state={session:JSON.parse(localStorage.getItem("ssa_session")||"null"),data:null,media:[],wizardStep:1,editingId:null};
+  const $=id=>document.getElementById(id),qa=s=>[...document.querySelectorAll(s)];
+  function toast(m,e=false){const x=$("toast");x.textContent=m;x.className="toast"+(e?" error":"");clearTimeout(window.__t);window.__t=setTimeout(()=>x.classList.add("hidden"),3400)}
+  function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+  function lines(v){return v.split(/\n|,/).map(x=>x.trim()).filter(Boolean)}
+  function saveSession(s){state.session=s;localStorage.setItem("ssa_session",JSON.stringify(s))}function clearSession(){state.session=null;localStorage.removeItem("ssa_session")}
+  async function rawApi(q,o={},auth=true){const h={...(o.headers||{})};if(o.body&&!h["Content-Type"])h["Content-Type"]="application/json";if(auth&&state.session?.access_token)h.Authorization="Bearer "+state.session.access_token;const r=await fetch(API_BASE+"?api="+q,{...o,headers:h});const b=await r.json().catch(()=>({}));return{r,b}}
+  async function refreshSession(){if(!state.session?.refresh_token)return false;const{x:r,b}=await (async()=>{const z=await rawApi("refresh",{method:"POST",body:JSON.stringify({refresh_token:state.session.refresh_token})},false);return{x:z.r,b:z.b}})();if(!r.ok||!b.access_token)return false;saveSession(b);return true}
+  async function api(q,o={},retry=true){let z=await rawApi(q,o,true);if(z.r.status===401&&retry&&await refreshSession())z=await rawApi(q,o,true);if(z.r.status===401||z.r.status===403){clearSession();showAuth();throw new Error(z.b.error||"Please sign in again.")}if(!z.r.ok)throw new Error(z.b.error||("Request failed: "+z.r.status));return z.b}
+  function showAuth(){$("appView").classList.add("hidden");$("authView").classList.remove("hidden");$("authError").classList.add("hidden");$("loginPassword").value=""}function showApp(){$("authView").classList.add("hidden");$("appView").classList.remove("hidden")}
+  const titles={connect:["Connect Instagram","Link your Instagram Professional account"],overview:["Overview","Your Instagram automation workspace"],automations:["Automations","Manage comment triggers and actions"],activity:["Activity","Recent automation events"],settings:["Settings","Account connection and access"],wizard:["Automation setup","Create or update a rule"]};
+  function navigate(v){qa(".view").forEach(x=>x.classList.remove("active"));$("view-"+v).classList.add("active");qa("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===v));$("topTitle").textContent=(titles[v]||["",""])[0];$("topSub").textContent=(titles[v]||["",""])[1];window.scrollTo({top:0,behavior:"smooth"})}
+  function renderAccount(){const a=state.data?.account||null,n=a?.username?"@"+a.username:"Not connected",m=a?[a.account_type,a.media_count!=null?a.media_count+" media":""].filter(Boolean).join(" • "):"Connect Instagram to continue";["accountName","overviewAccount","settingsAccount"].forEach(id=>$(id).textContent=n);["accountMeta","overviewAccountMeta","settingsAccountMeta"].forEach(id=>$(id).textContent=m||"Professional account")}
+  function card(a){const t=a.match_mode==="any"?"Any comment":(a.trigger_phrases||[]).join(", "),m=a.media_label||(a.media_id?"Specific content":"Any post or reel");return '<div class="automation-row"><div class="automation-top"><div><div class="automation-name">'+esc(a.name)+'</div><div class="automation-meta">'+esc(m)+'<br>'+esc(t)+'</div></div><span class="status '+(a.is_active?"":"paused")+'">'+(a.is_active?"Active":"Paused")+'</span></div><div class="automation-actions"><button class="btn ghost small" data-edit="'+a.id+'">Edit</button><button class="btn ghost small" data-toggle="'+a.id+'" data-active="'+(!a.is_active)+'">'+(a.is_active?"Pause":"Activate")+'</button></div></div>'}
+  function bind(root){root.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openWizard(b.dataset.edit));root.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=async()=>{try{await api("toggle",{method:"POST",body:JSON.stringify({id:b.dataset.toggle,is_active:b.dataset.active==="true"})});await load();toast("Automation updated")}catch(e){toast(e.message,true)}})}
+  function renderAutomations(){const a=state.data?.automations||[],html=a.length?a.map(card).join(""):'<div class="empty">No automations yet. Create the first one for your client.</div>';$("automationList").innerHTML=html;bind($("automationList"));const r=a.slice(0,3);$("overviewAutomations").innerHTML=r.length?r.map(card).join(""):'<div class="empty">No automations yet.</div>';bind($("overviewAutomations"))}
+  function renderActivity(){const a=state.data?.activity||[];$("activityBody").innerHTML=a.length?a.map(r=>'<tr><td>'+esc(new Date(r.created_at).toLocaleString())+'</td><td>@'+esc(r.commenter_username||"unknown")+'</td><td>'+esc(r.comment_text||"")+'</td><td class="'+(r.private_reply_status==="sent"?"ok":"")+'">'+esc(r.private_reply_status||"—")+'</td><td class="'+(r.public_reply_status==="sent"?"ok":"")+'">'+esc(r.public_reply_status||"—")+'</td><td class="'+(r.status==="processed"?"ok":r.status==="failed"?"fail":"skip")+'">'+esc(r.status||"")+'</td></tr>').join(""):'<tr><td colspan="6" style="text-align:center;color:#94a8bf;padding:24px">No activity yet.</td></tr>'}
+  function renderStats(){const a=state.data?.automations||[],x=state.data?.activity||[];$("metricActive").textContent=a.filter(v=>v.is_active).length;$("metricTotal").textContent=a.length;$("metricProcessed").textContent=x.filter(v=>v.status==="processed").length}
+  function renderUser(){const u=state.data?.user||{};$("userEmail").textContent=u.email||"";$("userRole").textContent=(u.role||"owner").toUpperCase();$("settingsUser").textContent=u.email||"";$("settingsRole").textContent=(u.role||"owner")+" access"}
+  function renderMedia(){const s=$("wMedia"),c=s.value;s.innerHTML='<option value="">Any post or reel</option>'+state.media.map(m=>{const cap=(m.caption||"").replace(/\s+/g," ").trim().slice(0,80),l=(m.media_product_type||m.media_type||"POST")+(cap?" — "+cap:"");return '<option value="'+esc(m.id)+'">'+esc(l)+'</option>'}).join("");if([...s.options].some(o=>o.value===c))s.value=c}
+  async function loadMedia(){const r=await api("media");state.media=r.media||[];renderMedia()}async function load(){state.data=await api("bootstrap");renderAccount();renderUser();if(state.data?.connected){renderAutomations();renderActivity();renderStats()}else{$("automationList").innerHTML='<div class="empty">Connect Instagram first.</div>';$("overviewAutomations").innerHTML='<div class="empty">Connect Instagram first.</div>';$("activityBody").innerHTML='<tr><td colspan="6" style="text-align:center;color:#94a8bf;padding:24px">Connect Instagram first.</td></tr>';$("metricActive").textContent="0";$("metricTotal").textContent="0";$("metricProcessed").textContent="0"}}
+  function resetWizard(){state.editingId=null;state.wizardStep=1;$("wizardTitle").textContent="Create automation";["wName","wTriggers","wReplies","wDmText"].forEach(id=>$(id).value="");$("wMedia").value="";$("wMatchMode").value="exact";$("wSendPublic").checked=$("wSendPrivate").checked=$("wActive").checked=true;$("wizardDeleteBtn").classList.add("hidden");renderWizard()}
+  async function openWizard(id=null){if(!state.media.length)try{await loadMedia()}catch(e){toast(e.message,true)}resetWizard();if(id){const a=(state.data?.automations||[]).find(x=>x.id===id);if(!a)return;state.editingId=id;$("wizardTitle").textContent="Edit automation";$("wName").value=a.name||"";$("wMedia").value=a.media_id||"";$("wMatchMode").value=a.match_mode||"exact";$("wTriggers").value=(a.trigger_phrases||[]).join("\n");$("wReplies").value=(a.instagram_automation_replies||[]).filter(r=>r.is_active).sort((x,y)=>(x.sort_order||0)-(y.sort_order||0)).map(r=>r.reply_text).join("\n");$("wDmText").value=a.dm_text||"";$("wSendPublic").checked=!!a.send_public_reply;$("wSendPrivate").checked=!!a.send_private_reply;$("wActive").checked=!!a.is_active;$("wizardDeleteBtn").classList.remove("hidden")}navigate("wizard");renderWizard()}
+  function validateStep(){if(state.wizardStep===1&&!$("wName").value.trim())throw new Error("Add an automation name.");if(state.wizardStep===2&&$("wMatchMode").value!=="any"&&!lines($("wTriggers").value).length)throw new Error("Add at least one trigger phrase.");if(state.wizardStep===3&&$("wSendPublic").checked&&!lines($("wReplies").value).length)throw new Error("Add at least one public reply or turn public replies off.");if(state.wizardStep===3&&$("wSendPrivate").checked&&!$("wDmText").value.trim())throw new Error("Add a DM message or turn private messages off.")}
+  function rv(k,v){return '<div class="review-item"><div class="review-key">'+esc(k)+'</div><div class="review-value">'+esc(v||"—")+'</div></div>'}function review(){const m=$("wMedia").selectedOptions[0]?.textContent||"Any post or reel",t=$("wMatchMode").value==="any"?"Any comment":$("wMatchMode").value+": "+lines($("wTriggers").value).join(", ");$("reviewGrid").innerHTML=rv("Name",$("wName").value.trim())+rv("Content",m)+rv("Trigger",t)+rv("Public replies",$("wSendPublic").checked?lines($("wReplies").value).join("\n"):"Off")+rv("Private DM",$("wSendPrivate").checked?$("wDmText").value.trim():"Off")+rv("Status",$("wActive").checked?"Active":"Paused")}
+  function renderWizard(){qa("[data-step-panel]").forEach(p=>p.classList.toggle("hidden",Number(p.dataset.stepPanel)!==state.wizardStep));qa("[data-step-indicator]").forEach(i=>{const n=Number(i.dataset.stepIndicator);i.classList.toggle("active",n===state.wizardStep);i.classList.toggle("done",n<state.wizardStep)});$("wizardBackBtn").classList.toggle("hidden",state.wizardStep===1);$("wizardNextBtn").textContent=state.wizardStep===4?(state.editingId?"Save changes":"Activate automation"):"Continue";$("triggerField").classList.toggle("hidden",$("wMatchMode").value==="any");$("publicRepliesField").classList.toggle("hidden",!$("wSendPublic").checked);$("dmField").classList.toggle("hidden",!$("wSendPrivate").checked);if(state.wizardStep===4)review()}
+  async function saveAutomation(){const o=$("wMedia").selectedOptions[0],p={id:state.editingId,name:$("wName").value.trim(),media_id:$("wMedia").value||null,media_label:$("wMedia").value?o.textContent:null,match_mode:$("wMatchMode").value,trigger_phrases:lines($("wTriggers").value),public_replies:lines($("wReplies").value),dm_text:$("wDmText").value.trim(),is_active:$("wActive").checked,send_public_reply:$("wSendPublic").checked,send_private_reply:$("wSendPrivate").checked};await api("automation",{method:"POST",body:JSON.stringify(p)});await load();navigate("automations");toast("Automation saved")}
+  $("loginForm").onsubmit=async e=>{e.preventDefault();$("loginButton").disabled=true;$("authError").classList.add("hidden");try{const z=await rawApi("login",{method:"POST",body:JSON.stringify({email:$("loginEmail").value.trim(),password:$("loginPassword").value})},false);if(!z.r.ok)throw new Error(z.b.error||"Sign in failed");saveSession(z.b);await load();showApp();if(state.data?.connected){navigate("overview");loadMedia().catch(()=>{})}else{navigate("connect")}}catch(err){$("authError").textContent=err.message;$("authError").classList.remove("hidden")}finally{$("loginButton").disabled=false}};
+  qa("[data-view]").forEach(b=>b.onclick=()=>navigate(b.dataset.view));qa("[data-new-automation]").forEach(b=>b.onclick=()=>state.data?.connected?openWizard():navigate("connect"));$("connectInstagramBtn").onclick=async()=>{try{const r=await api("instagram_connect",{method:"POST"});if(!r.url)throw new Error("Instagram connection URL was not returned.");window.location.assign(r.url)}catch(e){toast(e.message,true)}};$("refreshActivityBtn").onclick=async()=>{try{await load();toast("Activity refreshed")}catch(e){toast(e.message,true)}};$("cancelWizardBtn").onclick=()=>navigate("automations");["wMatchMode","wSendPublic","wSendPrivate"].forEach(id=>$(id).onchange=renderWizard);$("wizardBackBtn").onclick=()=>{state.wizardStep=Math.max(1,state.wizardStep-1);renderWizard()};$("wizardNextBtn").onclick=async()=>{try{validateStep();if(state.wizardStep<4){state.wizardStep++;renderWizard();return}await saveAutomation()}catch(e){toast(e.message,true)}};
+  $("wizardDeleteBtn").onclick=async()=>{if(!state.editingId||!confirm("Delete this automation?"))return;try{await api("automation&id="+encodeURIComponent(state.editingId),{method:"DELETE"});await load();navigate("automations");toast("Automation deleted")}catch(e){toast(e.message,true)}};
+  function logout(){clearSession();state.data=null;state.media=[];showAuth()}$("logoutBtn").onclick=logout;$("settingsLogoutBtn").onclick=logout;
+  (async()=>{
+    const params=new URLSearchParams(location.search);
+    const instagramStatus=params.get("instagram");
+    const instagramReason=params.get("reason");
+    if(instagramStatus)history.replaceState({},document.title,location.pathname);
+    if(!state.session?.access_token){showAuth();return}
+    try{
+      await load();showApp();
+      if(state.data?.connected){navigate("overview");loadMedia().catch(()=>{})}else{navigate("connect")}
+      if(instagramStatus==="connected")toast("Instagram connected successfully");
+      if(instagramStatus==="error")toast(instagramReason||"Instagram connection failed",true);
+    }catch(e){showAuth()}
+  })();
+</script>
+</body>
+</html>
