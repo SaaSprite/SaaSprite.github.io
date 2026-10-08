@@ -16,7 +16,7 @@
     .eyebrow{font-size:.77rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);font-weight:800}
     .auth-copy{max-width:620px}.auth-copy h1{font-size:clamp(2.7rem,6vw,5.7rem);line-height:.98;margin:10px 0 18px;letter-spacing:-.04em}.auth-copy p{color:var(--muted);font-size:1.08rem;max-width:560px}.auth-foot{font-size:.82rem;color:#60758d}
     .auth-form-wrap{display:flex;align-items:center;justify-content:center;padding:34px}.auth-card{width:min(440px,100%);background:rgba(13,28,44,.9);border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:var(--shadow)}
-    .auth-card h2{font-size:1.55rem;margin:0 0 7px}.auth-card p{color:var(--muted);font-size:.91rem;margin:0 0 24px}
+    .auth-card h2{font-size:1.55rem;margin:0 0 7px}.auth-card p{color:var(--muted);font-size:.91rem;margin:0 0 24px}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:20px}.auth-tabs button.active{background:#18314a;color:#fff;border-color:#365a78}.access-card{max-width:720px;margin:8vh auto 0;padding:28px}.admin-list{display:flex;flex-direction:column;gap:12px}.admin-row{border:1px solid var(--line);border-radius:14px;padding:15px;background:#0a1826}.admin-row-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.account-switcher{width:auto;min-width:180px;max-width:280px;padding:8px 10px}.badge{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:.72rem;color:#c7d4e2}.badge.pending{color:#f7cc85}.badge.suspended,.badge.cancelled{color:#ff9aa4}
     .field{margin-bottom:15px}.field label{display:block;margin:0 0 7px;color:#c8d3df;font-size:.82rem;font-weight:700}
     input,textarea,select{width:100%;border:1px solid var(--line);background:#081522;color:var(--text);border-radius:12px;padding:11px 12px;outline:none}input:focus,textarea:focus,select:focus{border-color:#388566;box-shadow:0 0 0 3px rgba(57,217,138,.08)}textarea{min-height:108px;resize:vertical}
     .btn{border:0;border-radius:12px;padding:10px 14px;background:var(--brand);color:#042113;font-weight:800}.btn.secondary{background:#172a40;border:1px solid var(--line);color:var(--text)}.btn.ghost{background:transparent;border:1px solid var(--line);color:#c8d4e2}.btn.danger{background:#3d2029;color:#ffc0c8;border:1px solid #6e3040}.btn.small{padding:7px 10px;font-size:.82rem}.btn.full{width:100%;padding:12px}.auth-error{margin-top:12px;color:#ff9ba5;font-size:.85rem}
@@ -43,7 +43,8 @@
     html[dir="rtl"] .live-dot{margin-right:0;margin-left:6px}
     html[dir="rtl"] .toast{right:auto;left:22px}
     html[dir="rtl"] .wizard-foot{flex-direction:row-reverse}
-    @media(max-width:950px){.auth-shell{grid-template-columns:1fr}.auth-art{display:none}.sidebar{display:none}.main{margin-left:0;margin-right:0}.mobile-nav{display:flex;gap:6px;overflow:auto;padding:8px 16px;border-bottom:1px solid var(--line);background:#07131f}.cards{grid-template-columns:1fr}.grid-2,.settings-list,.row,.review,.filters,.summary-strip{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.topbar{padding:0 16px}.content{padding:18px}}
+    @media(max-width:950px){.auth-shell{grid-template-columns:1fr}.auth-art{display:none}.auth-form-wrap{padding:18px}.auth-card{padding:22px}.sidebar{display:none}.main{margin-left:0;margin-right:0}.mobile-nav{display:flex;gap:6px;overflow:auto;padding:8px 12px;border-bottom:1px solid var(--line);background:#07131f}.cards{grid-template-columns:1fr}.grid-2,.settings-list,.row,.review,.filters,.summary-strip{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.topbar{height:auto;min-height:72px;padding:10px 14px;gap:10px;align-items:flex-start;flex-direction:column}.topbar>.toolbar{width:100%;justify-content:space-between}.account-switcher{min-width:0;max-width:none;flex:1}.content{padding:14px}.page-head{flex-direction:column}.page-head>.toolbar{width:100%}.automation-top{flex-direction:column}.automation-actions{flex-wrap:wrap}table{min-width:780px}.wizard-body{padding:16px}.wizard-foot{padding:12px 16px}.access-card{margin:20px auto 0;padding:20px}.admin-row-head{flex-direction:column}}
+    @media(max-width:520px){.stepper{grid-template-columns:1fr}.mobile-nav button{white-space:nowrap}.btn{padding:9px 11px}.account-pill{display:none}.topbar .lang-btn{margin-left:auto}.summary-mini{padding:11px}.metric-value{font-size:1.6rem}}
   </style>
 </head>
 <body>
@@ -56,26 +57,60 @@
   <div class="auth-form-wrap">
     <div class="auth-card">
       <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button id="authLanguageToggle" class="btn ghost small lang-btn" type="button">العربية</button></div>
-      <div class="eyebrow">Welcome back</div><h2>Sign in</h2><p>Use your Social Automations account to continue.</p>
-      <form id="loginForm">
-        <div class="field"><label>Email</label><input id="loginEmail" type="email" required autocomplete="username" placeholder="you@company.com"></div>
-        <div class="field"><label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="••••••••"></div>
-        <button id="loginButton" class="btn full" type="submit">Sign in</button>
-        <div id="authError" class="auth-error hidden"></div>
-      </form>
+      <div class="auth-tabs"><button id="showLoginBtn" class="btn ghost active" type="button">Sign in</button><button id="showSignupBtn" class="btn ghost" type="button">Create account</button></div>
+      <div id="loginPanel">
+        <div class="eyebrow">Welcome back</div><h2>Sign in</h2><p>Use your Social Automations account to continue.</p><div id="loginNotice" class="top-sub hidden" style="margin:-12px 0 16px;line-height:1.5;color:#7ce9ae"></div>
+        <form id="loginForm">
+          <div class="field"><label>Email</label><input id="loginEmail" type="email" required autocomplete="username" placeholder="you@company.com"></div>
+          <div class="field"><label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="••••••••"></div>
+          <button id="loginButton" class="btn full" type="submit">Sign in</button>
+          <div id="authError" class="auth-error hidden"></div>
+        </form>
+      </div>
+      <div id="signupPanel" class="hidden">
+        <div class="eyebrow">Request access</div><h2>Create account</h2><p>Create your login and send a workspace request to SaaSprite for approval.</p>
+        <form id="signupForm">
+          <div class="field"><label>Workspace / business name</label><input id="signupWorkspace" type="text" required placeholder="Your business name"></div>
+          <div class="field"><label>Email</label><input id="signupEmail" type="email" required autocomplete="username" placeholder="you@company.com"></div>
+          <div class="field"><label>Password</label><input id="signupPassword" type="password" minlength="8" required autocomplete="new-password" placeholder="At least 8 characters"></div>
+          <button id="signupButton" class="btn full" type="submit">Create account</button>
+          <div id="signupMessage" class="top-sub" style="margin-top:12px;line-height:1.5"></div>
+          <div id="signupError" class="auth-error hidden"></div>
+        </form>
+      </div>
     </div>
   </div>
 </section>
 <section id="appView" class="hidden">
   <aside class="sidebar">
     <div class="logo-row"><div class="logo-dot"></div><div class="brand-name">SaaSprite <span>Social</span></div></div>
-    <nav class="nav"><button data-view="overview" class="active">Overview</button><button data-view="automations">Automations</button><button data-view="activity">Activity</button><button data-view="settings">Settings</button></nav>
+    <nav class="nav"><button data-view="overview" class="active">Overview</button><button data-view="automations">Automations</button><button data-view="activity">Activity</button><button data-view="settings">Settings</button><button id="platformAdminNav" data-view="admin" class="hidden">Super Admin</button></nav>
     <div class="sidebar-foot"><div id="userEmail" class="user-email"></div><div id="userRole" class="user-role"></div><button id="logoutBtn" class="btn ghost small" style="margin-top:11px;width:100%">Sign out</button></div>
   </aside>
   <main class="main">
-    <header class="topbar"><div><div id="topTitle" class="top-title">Overview</div><div id="topSub" class="top-sub">Your Instagram automation workspace</div></div><div class="toolbar"><button id="languageToggle" class="btn ghost small lang-btn" type="button">العربية</button><div class="account-pill"><div class="account-avatar">IG</div><div><div id="accountName" class="account-name">Connecting…</div><div id="accountMeta" class="account-meta">Instagram Professional account</div></div></div></div></header>
-    <div class="mobile-nav"><button class="btn secondary small" data-view="overview">Overview</button><button class="btn secondary small" data-view="automations">Automations</button><button class="btn secondary small" data-view="activity">Activity</button><button class="btn secondary small" data-view="settings">Settings</button></div>
+    <header class="topbar"><div><div id="topTitle" class="top-title">Overview</div><div id="topSub" class="top-sub">Your Instagram automation workspace</div></div><div class="toolbar"><select id="accountSwitcher" class="account-switcher hidden" aria-label="Instagram account"></select><button id="addInstagramAccountBtn" class="btn ghost small hidden" type="button">+ Account</button><button id="languageToggle" class="btn ghost small lang-btn" type="button">العربية</button><div class="account-pill"><div class="account-avatar">IG</div><div><div id="accountName" class="account-name">Connecting…</div><div id="accountMeta" class="account-meta">Instagram Professional account</div></div></div></div></header>
+    <div class="mobile-nav"><button class="btn secondary small" data-view="overview">Overview</button><button class="btn secondary small" data-view="automations">Automations</button><button class="btn secondary small" data-view="activity">Activity</button><button class="btn secondary small" data-view="settings">Settings</button><button id="platformAdminMobileNav" class="btn secondary small hidden" data-view="admin">Super Admin</button></div>
     <div class="content">
+      <section id="view-access" class="view">
+        <div class="panel access-card">
+          <div class="eyebrow" id="accessEyebrow">Workspace access</div>
+          <h2 id="accessTitle" style="margin:8px 0">Pending approval</h2>
+          <p id="accessMessage" class="top-sub" style="font-size:.95rem;line-height:1.7">Your workspace request is waiting for SaaSprite approval.</p>
+          <div id="accessDetails" class="review" style="margin-top:18px"></div>
+          <button id="accessLogoutBtn" class="btn ghost" style="margin-top:18px">Sign out</button>
+        </div>
+      </section>
+      <section id="view-admin" class="view">
+        <div class="page-head"><div><h2>Super Admin</h2><p>Approve customers, manage plans, and control workspace execution.</p></div><button id="refreshAdminBtn" class="btn secondary">Refresh</button></div>
+        <div class="cards">
+          <div class="card metric"><div class="metric-label">PENDING REQUESTS</div><div id="adminPendingCount" class="metric-value">0</div></div>
+          <div class="card metric"><div class="metric-label">ACTIVE WORKSPACES</div><div id="adminActiveCount" class="metric-value">0</div></div>
+          <div class="card metric"><div class="metric-label">SUSPENDED</div><div id="adminSuspendedCount" class="metric-value">0</div></div>
+          <div class="card metric"><div class="metric-label">INSTAGRAM ACCOUNTS</div><div id="adminInstagramCount" class="metric-value">0</div></div>
+        </div>
+        <div class="panel" style="margin-bottom:18px"><div class="panel-head"><h3>Signup requests</h3></div><div class="panel-body"><div id="adminRequests" class="admin-list"></div></div></div>
+        <div class="panel"><div class="panel-head"><h3>Customer workspaces</h3></div><div class="panel-body"><div id="adminWorkspaces" class="admin-list"></div></div></div>
+      </section>
       <section id="view-connect" class="view">
         <div class="page-head"><div><h2>Connect Instagram</h2><p>Connect the Instagram Professional account you want to automate.</p></div></div>
         <div class="panel" style="max-width:760px">
@@ -180,7 +215,9 @@
     reportAutomationId:null,
     currentView:"overview",
     refreshTimer:null,
-    lang:localStorage.getItem("ssa_lang")||"en"
+    lang:localStorage.getItem("ssa_lang")||"en",
+    selectedAccountId:localStorage.getItem("ssa_account_id")||null,
+    adminData:null
   };
 
   const $=id=>document.getElementById(id);
@@ -359,14 +396,27 @@
     "Trigger":"المحفز",
     "Public replies":"الردود العامة",
     "Off":"متوقف",
-    "Connect Instagram to continue":"اربط إنستغرام للمتابعة"
+    "Connect Instagram to continue":"اربط إنستغرام للمتابعة",
+    "Create account":"إنشاء حساب",
+    "Request access":"طلب وصول",
+    "Workspace / business name":"اسم مساحة العمل / الشركة",
+    "Your business name":"اسم شركتك",
+    "At least 8 characters":"8 أحرف على الأقل",
+    "Workspace access":"الوصول لمساحة العمل",
+    "Pending approval":"بانتظار الموافقة",
+    "Super Admin":"الإدارة العليا",
+    "+ Account":"+ حساب",
+    "Workspace suspended":"مساحة العمل موقوفة",
+    "Subscription inactive":"الاشتراك غير نشط"
   };
 
   const PLACEHOLDER_AR={
     "you@company.com":"you@company.com",
     "Name, trigger, content…":"الاسم، المحفز، المحتوى…",
     "Username, comment, automation, reply…":"اسم المستخدم، التعليق، الأتمتة، الرد…",
-    "e.g. Reel — Price details":"مثال: Reel — تفاصيل السعر"
+    "e.g. Reel — Price details":"مثال: Reel — تفاصيل السعر",
+    "Your business name":"اسم شركتك",
+    "At least 8 characters":"8 أحرف على الأقل"
   };
 
   function tr(text){
@@ -471,7 +521,11 @@
     const headers={...(options.headers||{})};
     if(options.body&&!headers["Content-Type"])headers["Content-Type"]="application/json";
     if(auth&&state.session?.access_token)headers.Authorization="Bearer "+state.session.access_token;
-    const response=await fetch(API_BASE+"?api="+query,{...options,headers});
+    let resolvedQuery=query;
+    if(auth&&state.selectedAccountId&&!resolvedQuery.includes("account_id=")){
+      resolvedQuery+="&account_id="+encodeURIComponent(state.selectedAccountId);
+    }
+    const response=await fetch(API_BASE+"?api="+resolvedQuery,{...options,headers});
     const body=await response.json().catch(()=>({}));
     return{response,body};
   }
@@ -493,10 +547,13 @@
     if(result.response.status===401&&retry&&await refreshSession()){
       result=await rawApi(query,options,true);
     }
-    if(result.response.status===401||result.response.status===403){
+    if(result.response.status===401){
       clearSession();
       showAuth();
       throw new Error(result.body.error||"Please sign in again.");
+    }
+    if(result.response.status===403){
+      throw new Error(result.body.error||"Access is currently unavailable.");
     }
     if(!result.response.ok)throw new Error(result.body.error||("Request failed: "+result.response.status));
     return result.body;
@@ -521,7 +578,9 @@
     activity:["Activity","Search, filter, and measure automated work"],
     settings:["Settings","Account connection and value settings"],
     wizard:["Automation setup","Create or update a rule"],
-    report:["Automation report","Performance and saved effort"]
+    report:["Automation report","Performance and saved effort"],
+    access:["Workspace access","Subscription and approval status"],
+    admin:["Super Admin","Customers, subscriptions, and signup requests"]
   };
 
   function navigate(view){
@@ -536,7 +595,204 @@
     window.scrollTo({top:0,behavior:"smooth"});
     if(view==="activity")loadActivity().catch(error=>toast(error.message,true));
     if(view==="automations")renderAutomations();
+    if(view==="admin")loadAdminData().catch(error=>toast(error.message,true));
     applyLanguage();
+  }
+
+  function renderAccessState(){
+    const access=state.data?.access_state||{};
+    const request=state.data?.signup_request||null;
+    let title="Workspace access";
+    let message="Your workspace is not currently available.";
+
+    if(!access.workspace_id){
+      title=request?.status==="rejected"?"Request rejected":"Pending approval";
+      message=request?.status==="rejected"
+        ?(request.review_note||"Your workspace request was not approved. Contact SaaSprite if you need help.")
+        :"Your workspace request is waiting for SaaSprite approval. You can sign out and come back later.";
+    }else if(access.workspace_status==="suspended"){
+      title="Workspace suspended";
+      message="This workspace has been suspended by SaaSprite. Automations are stopped until the workspace is reactivated.";
+    }else if(!["active","trial"].includes(access.subscription_status||"")){
+      title="Subscription inactive";
+      message="The subscription is not active. Automations and workspace access are paused until SaaSprite reactivates it.";
+    }else{
+      title="Workspace access";
+      message="Workspace access is currently unavailable.";
+    }
+
+    $("accessTitle").textContent=title;
+    $("accessMessage").textContent=message;
+    $("accessDetails").innerHTML=
+      reviewValue("Workspace",state.data?.workspace?.name||request?.workspace_name||"—")+
+      reviewValue("Workspace status",access.workspace_status||"pending")+
+      reviewValue("Subscription",access.subscription_status||"pending")+
+      reviewValue("Plan",access.plan_code||request?.desired_plan_code||"—");
+    applyLanguage();
+  }
+
+  function renderAccountSwitcher(){
+    const accounts=state.data?.accounts||[];
+    const select=$("accountSwitcher");
+    const addButton=$("addInstagramAccountBtn");
+    const access=state.data?.access_state||{};
+
+    if(!select||!addButton)return;
+
+    if(accounts.length===0){
+      select.classList.add("hidden");
+    }else{
+      select.innerHTML=accounts.map(account=>{
+        const label=(account.username?"@"+account.username:account.ig_account_id)+
+          (account.account_type?" · "+account.account_type:"");
+        return '<option value="'+esc(account.id)+'">'+esc(label)+'</option>';
+      }).join("");
+      const selected=state.data?.selected_account_id||state.selectedAccountId||accounts[0]?.id;
+      if(selected&&accounts.some(account=>account.id===selected)){
+        select.value=selected;
+        state.selectedAccountId=selected;
+        localStorage.setItem("ssa_account_id",selected);
+      }
+      select.classList.toggle("hidden",accounts.length<1);
+    }
+
+    const canAdd=!!access.access_allowed&&accounts.length<Number(access.max_instagram_accounts||1);
+    addButton.classList.toggle("hidden",!canAdd);
+  }
+
+  function renderPlatformAdminVisibility(){
+    const access=state.data?.access_state||{};
+    const isAdmin=!!access.is_platform_admin;
+    const allowed=!!access.access_allowed;
+
+    $("platformAdminNav").classList.toggle("hidden",!isAdmin);
+    $("platformAdminMobileNav").classList.toggle("hidden",!isAdmin);
+
+    ["overview","automations","activity","settings"].forEach(view=>{
+      qa('[data-view="'+view+'"]').forEach(button=>{
+        button.classList.toggle("hidden",!allowed);
+      });
+    });
+
+    if(!allowed){
+      $("accountSwitcher").classList.add("hidden");
+      $("addInstagramAccountBtn").classList.add("hidden");
+    }
+  }
+
+  function adminBadge(status){
+    return '<span class="badge '+esc(status||"")+'">'+esc(status||"—")+'</span>';
+  }
+
+  function renderAdmin(){
+    const data=state.adminData||{requests:[],workspaces:[],plans:[]};
+    const requests=data.requests||[];
+    const workspaces=data.workspaces||[];
+    const plans=data.plans||[];
+    const pending=requests.filter(request=>request.status==="pending");
+
+    $("adminPendingCount").textContent=String(pending.length);
+    $("adminActiveCount").textContent=String(workspaces.filter(w=>w.status==="active").length);
+    $("adminSuspendedCount").textContent=String(workspaces.filter(w=>w.status==="suspended").length);
+    $("adminInstagramCount").textContent=String(workspaces.reduce((sum,w)=>sum+(w.instagram_accounts?.length||0),0));
+
+    $("adminRequests").innerHTML=pending.length?pending.map(request=>{
+      const planOptions=plans.filter(p=>p.is_active&&p.code!=="internal").map(plan=>
+        '<option value="'+esc(plan.code)+'" '+(plan.code===(request.desired_plan_code||"starter")?"selected":"")+'>'+esc(plan.name)+' · '+plan.max_instagram_accounts+' IG</option>'
+      ).join("");
+      return '<div class="admin-row" data-request-row="'+request.id+'">'+
+        '<div class="admin-row-head"><div><div class="automation-name">'+esc(request.workspace_name)+'</div>'+
+        '<div class="automation-meta">'+esc(request.email||request.auth_user_id)+'<br>Requested '+esc(request.desired_plan_code||"starter")+' · '+esc(new Date(request.created_at).toLocaleString())+'</div></div>'+
+        adminBadge(request.status)+'</div>'+
+        '<div class="admin-actions"><select class="select-small" data-request-plan="'+request.id+'">'+planOptions+'</select>'+
+        '<button class="btn small" data-approve-trial="'+request.id+'">Approve 14-day trial</button>'+
+        '<button class="btn secondary small" data-approve-active="'+request.id+'">Approve active</button>'+
+        '<button class="btn danger small" data-reject-request="'+request.id+'">Reject</button></div></div>';
+    }).join(""):'<div class="empty">No pending signup requests.</div>';
+
+    $("adminWorkspaces").innerHTML=workspaces.length?workspaces.map(workspace=>{
+      const subscription=workspace.subscription||{};
+      const workspacePlans=plans.filter(plan=>plan.code!=="internal"||subscription.plan_code==="internal");
+      const planOptions=workspacePlans.map(plan=>'<option value="'+esc(plan.code)+'" '+(plan.code===subscription.plan_code?"selected":"")+'>'+esc(plan.name)+'</option>').join("");
+      const workspaceStatuses=["active","suspended","cancelled"].map(status=>'<option value="'+status+'" '+(status===workspace.status?"selected":"")+'>'+status+'</option>').join("");
+      const subscriptionStatuses=["trial","active","past_due","suspended","cancelled"].map(status=>'<option value="'+status+'" '+(status===subscription.status?"selected":"")+'>'+status+'</option>').join("");
+      return '<div class="admin-row" data-workspace-row="'+workspace.id+'">'+
+        '<div class="admin-row-head"><div><div class="automation-name">'+esc(workspace.name)+'</div>'+
+        '<div class="automation-meta">'+(workspace.members?.map(m=>esc(m.email||m.auth_user_id)+" · "+esc(m.role)).join("<br>")||"No members")+
+        '<br>'+(workspace.instagram_accounts?.length||0)+' Instagram account(s)</div></div>'+
+        adminBadge(workspace.status)+'</div>'+
+        '<div class="admin-actions">'+
+        '<select class="select-small" data-workspace-plan="'+workspace.id+'">'+planOptions+'</select>'+
+        '<select class="select-small" data-workspace-status="'+workspace.id+'">'+workspaceStatuses+'</select>'+
+        '<select class="select-small" data-subscription-status="'+workspace.id+'">'+subscriptionStatuses+'</select>'+
+        '<button class="btn small" data-save-workspace="'+workspace.id+'">Save</button>'+
+        '</div></div>';
+    }).join(""):'<div class="empty">No customer workspaces yet.</div>';
+
+    bindAdminActions();
+  }
+
+  function bindAdminActions(){
+    qa("[data-approve-trial],[data-approve-active]").forEach(button=>button.onclick=async()=>{
+      const requestId=button.dataset.approveTrial||button.dataset.approveActive;
+      const trial=!!button.dataset.approveTrial;
+      const plan=document.querySelector('[data-request-plan="'+requestId+'"]').value;
+      if(!confirm((trial?"Approve this customer with a 14-day trial?":"Approve and activate this customer now?")))return;
+      setBusy(true,"Updating customer…");
+      try{
+        await api("signup_review",{method:"POST",body:JSON.stringify({
+          request_id:requestId,
+          decision:"approve",
+          plan_code:plan,
+          subscription_status:trial?"trial":"active"
+        })});
+        await loadAdminData();
+        toast("Customer approved");
+      }catch(error){toast(error.message,true)}
+      finally{setBusy(false)}
+    });
+
+    qa("[data-reject-request]").forEach(button=>button.onclick=async()=>{
+      if(!confirm("Reject this signup request?"))return;
+      const note=prompt("Optional reason for rejection:")||"";
+      setBusy(true,"Rejecting request…");
+      try{
+        await api("signup_review",{method:"POST",body:JSON.stringify({
+          request_id:button.dataset.rejectRequest,
+          decision:"reject",
+          review_note:note
+        })});
+        await loadAdminData();
+        toast("Request rejected");
+      }catch(error){toast(error.message,true)}
+      finally{setBusy(false)}
+    });
+
+    qa("[data-save-workspace]").forEach(button=>button.onclick=async()=>{
+      const id=button.dataset.saveWorkspace;
+      const plan=document.querySelector('[data-workspace-plan="'+id+'"]').value;
+      const workspaceStatus=document.querySelector('[data-workspace-status="'+id+'"]').value;
+      const subscriptionStatus=document.querySelector('[data-subscription-status="'+id+'"]').value;
+      if(!confirm("Apply these workspace and subscription changes? Automation execution will follow the new status immediately."))return;
+      setBusy(true,"Updating workspace…");
+      try{
+        await api("workspace_commercial_state",{method:"POST",body:JSON.stringify({
+          workspace_id:id,
+          plan_code:plan,
+          workspace_status:workspaceStatus,
+          subscription_status:subscriptionStatus
+        })});
+        await loadAdminData();
+        toast("Workspace updated");
+      }catch(error){toast(error.message,true)}
+      finally{setBusy(false)}
+    });
+  }
+
+  async function loadAdminData(){
+    if(!state.data?.access_state?.is_platform_admin)return;
+    state.adminData=await api("platform_admin");
+    renderAdmin();
   }
 
   function renderAccount(){
@@ -839,8 +1095,24 @@
 
   async function loadWorkspace(){
     state.data=await api("bootstrap");
-    renderAccount();
+
+    if(state.data?.selected_account_id){
+      state.selectedAccountId=state.data.selected_account_id;
+      localStorage.setItem("ssa_account_id",state.selectedAccountId);
+    }
+
     renderUser();
+    renderPlatformAdminVisibility();
+    renderAccountSwitcher();
+
+    const access=state.data?.access_state||{};
+    if(!access.access_allowed){
+      renderAccessState();
+      return;
+    }
+
+    renderAccount();
+
     if(state.data?.connected){
       renderAutomations();
       renderStats();
@@ -856,6 +1128,22 @@
       $("automationList").innerHTML='<div class="empty">Connect Instagram first.</div>';
       $("overviewAutomations").innerHTML='<div class="empty">Connect Instagram first.</div>';
       renderActivityRows([],"activityBody",true);
+      renderStats();
+    }
+  }
+
+  function routeAfterLoad(){
+    showApp();
+    const access=state.data?.access_state||{};
+    if(!access.access_allowed){
+      navigate("access");
+      return;
+    }
+    if(state.data?.connected){
+      navigate("overview");
+      loadMedia().catch(()=>{});
+    }else{
+      navigate("connect");
     }
   }
 
@@ -977,20 +1265,100 @@
     }finally{setBusy(false)}
   }
 
+  function isAccessError(message){
+    return /WORKSPACE_|SUBSCRIPTION_|NO_SUBSCRIPTION|TRIAL_EXPIRED|PENDING_APPROVAL/.test(String(message||""));
+  }
+
   function startAutoRefresh(){
     clearInterval(state.refreshTimer);
     state.refreshTimer=setInterval(async()=>{
-      if(document.hidden||!state.session?.access_token||!state.data?.connected)return;
+      if(document.hidden||!state.session?.access_token)return;
       try{
+        if(state.currentView==="access"){
+          await loadWorkspace();
+          if(state.data?.access_state?.access_allowed)routeAfterLoad();
+          return;
+        }
+
+        if(state.currentView==="admin"&&state.data?.access_state?.is_platform_admin){
+          await loadAdminData();
+          return;
+        }
+
+        if(!state.data?.connected)return;
+
         if(state.currentView==="activity")await loadActivity();
         else if(state.currentView==="report"&&state.reportAutomationId)await refreshReport(state.reportAutomationId,{silent:true});
-        else if(state.currentView==="overview")await loadWorkspace();
-      }catch(error){console.warn("Silent auto-refresh failed",error)}
+        else if(state.currentView==="overview"){
+          await loadWorkspace();
+          if(!state.data?.access_state?.access_allowed)routeAfterLoad();
+        }
+      }catch(error){
+        if(isAccessError(error.message)){
+          try{
+            await loadWorkspace();
+            routeAfterLoad();
+          }catch(inner){console.warn("Access refresh failed",inner)}
+        }else{
+          console.warn("Silent auto-refresh failed",error);
+        }
+      }
     },20000);
   }
 
   $("languageToggle").onclick=toggleLanguage;
   $("authLanguageToggle").onclick=toggleLanguage;
+
+  function showAuthMode(mode){
+    const signup=mode==="signup";
+    $("loginPanel").classList.toggle("hidden",signup);
+    $("signupPanel").classList.toggle("hidden",!signup);
+    $("showLoginBtn").classList.toggle("active",!signup);
+    $("showSignupBtn").classList.toggle("active",signup);
+  }
+
+  $("showLoginBtn").onclick=()=>showAuthMode("login");
+  $("showSignupBtn").onclick=()=>showAuthMode("signup");
+
+  $("signupForm").onsubmit=async event=>{
+    event.preventDefault();
+    $("signupButton").disabled=true;
+    $("signupError").classList.add("hidden");
+    $("signupMessage").textContent="";
+    setBusy(true,"Creating account…");
+    try{
+      const {response,body}=await rawApi(
+        "signup",
+        {method:"POST",body:JSON.stringify({
+          workspace_name:$("signupWorkspace").value.trim(),
+          email:$("signupEmail").value.trim(),
+          password:$("signupPassword").value,
+          plan_code:"starter"
+        })},
+        false
+      );
+      if(!response.ok)throw new Error(body.error||"Could not create account.");
+      if(body.access_token){
+        saveSession(body);
+        await loadWorkspace();
+        routeAfterLoad();
+        startAutoRefresh();
+      }else{
+        const message=body.email_confirmation_required
+          ?"Account created. Check your email to confirm it, then sign in. Your workspace request is pending SaaSprite approval."
+          :"Account created. Your workspace request is pending SaaSprite approval.";
+        $("signupMessage").textContent=message;
+        $("loginNotice").textContent=message;
+        $("loginNotice").classList.remove("hidden");
+      }
+    }catch(error){
+      $("signupError").textContent=error.message;
+      $("signupError").classList.remove("hidden");
+    }finally{
+      $("signupButton").disabled=false;
+      setBusy(false);
+    }
+  };
 
   $("loginForm").onsubmit=async event=>{
     event.preventDefault();
@@ -1007,13 +1375,7 @@
       saveSession(body);
       setBusy(true,"Loading your workspace…");
       await loadWorkspace();
-      showApp();
-      if(state.data?.connected){
-        navigate("overview");
-        loadMedia().catch(()=>{});
-      }else{
-        navigate("connect");
-      }
+      routeAfterLoad();
       startAutoRefresh();
     }catch(error){
       $("authError").textContent=error.message;
@@ -1025,6 +1387,21 @@
   };
 
   qa("[data-view]").forEach(btn=>btn.onclick=()=>navigate(btn.dataset.view));
+  $("accountSwitcher").onchange=async()=>{
+    state.selectedAccountId=$("accountSwitcher").value||null;
+    if(state.selectedAccountId)localStorage.setItem("ssa_account_id",state.selectedAccountId);
+    state.media=[];
+    setBusy(true,"Switching account…");
+    try{
+      await loadWorkspace();
+      routeAfterLoad();
+    }catch(error){toast(error.message,true)}
+    finally{setBusy(false)}
+  };
+  $("addInstagramAccountBtn").onclick=()=>$("connectInstagramBtn").click();
+  $("refreshAdminBtn").onclick=()=>loadAdminData().catch(error=>toast(error.message,true));
+  $("accessLogoutBtn").onclick=()=>logout();
+
   qa("[data-new-automation]").forEach(btn=>btn.onclick=()=>state.data?.connected?openWizard():navigate("connect"));
   qa("[data-dashboard-metric]").forEach(card=>card.onclick=()=>{
     const metric=card.dataset.dashboardMetric;
@@ -1148,6 +1525,9 @@
     clearSession();
     state.data=null;
     state.media=[];
+    state.adminData=null;
+    state.selectedAccountId=null;
+    localStorage.removeItem("ssa_account_id");
     showAuth();
   }
 
@@ -1158,7 +1538,12 @@
     const params=new URLSearchParams(location.search);
     const instagramStatus=params.get("instagram");
     const instagramReason=params.get("reason");
-    if(instagramStatus)history.replaceState({},document.title,location.pathname);
+    const oauthAccountId=params.get("account_id");
+    if(oauthAccountId){
+      state.selectedAccountId=oauthAccountId;
+      localStorage.setItem("ssa_account_id",oauthAccountId);
+    }
+    if(instagramStatus||oauthAccountId)history.replaceState({},document.title,location.pathname);
 
     applyLanguage();
     if(!state.session?.access_token){showAuth();return}
@@ -1166,13 +1551,7 @@
     setBusy(true,"Loading your workspace…");
     try{
       await loadWorkspace();
-      showApp();
-      if(state.data?.connected){
-        navigate("overview");
-        loadMedia().catch(()=>{});
-      }else{
-        navigate("connect");
-      }
+      routeAfterLoad();
       if(instagramStatus==="connected")toast("Instagram connected successfully");
       if(instagramStatus==="error")toast(instagramReason||"Instagram connection failed",true);
       startAutoRefresh();
