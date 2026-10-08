@@ -33,7 +33,17 @@
     .wizard-wrap{max-width:900px;margin:0 auto}.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}.step{padding:10px;border-radius:12px;border:1px solid var(--line);color:#7389a1;font-size:.79rem;font-weight:800;background:#0a1725}.step.active{border-color:#2c7d5c;color:#8aeab6;background:rgba(57,217,138,.07)}.step.done{color:#c4d2df}.wizard-card{background:#0d1c2c;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.wizard-body{padding:22px}.wizard-foot{padding:15px 22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.hint{color:#6f849b;font-size:.76rem;margin-top:5px}.toggle-row{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0 17px}.toggle{display:flex;align-items:center;gap:8px;color:#c9d4df;font-size:.86rem}.toggle input{width:auto}.review{display:grid;grid-template-columns:1fr 1fr;gap:12px}.review-item{padding:13px;border:1px solid var(--line);border-radius:12px;background:#0a1725}.review-key{font-size:.74rem;color:#758ba2;font-weight:800;text-transform:uppercase}.review-value{margin-top:5px;color:#d7e1eb;white-space:pre-wrap}
     .settings-list{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.settings-card{padding:19px}.filters{display:grid;grid-template-columns:2fr repeat(4,minmax(120px,1fr)) auto;gap:10px;align-items:end}.summary-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}.summary-mini{padding:13px;border:1px solid var(--line);border-radius:13px;background:#091725}.summary-mini .metric-value{font-size:1.35rem}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.select-small{min-width:140px}.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--brand);margin-right:6px;box-shadow:0 0 12px rgba(57,217,138,.7)}.toast{position:fixed;right:22px;bottom:22px;z-index:10;max-width:420px;background:#102337;border:1px solid var(--line);padding:13px 15px;border-radius:13px;box-shadow:var(--shadow)}.toast.error{border-color:#7c3445;color:#ffc0c8}.mobile-nav{display:none}.busy-overlay{position:fixed;inset:0;z-index:30;background:rgba(3,9,16,.68);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}.busy-card{display:flex;align-items:center;gap:13px;background:#0d1c2c;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);min-width:220px}.spinner{width:22px;height:22px;border:3px solid rgba(255,255,255,.16);border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-    @media(max-width:950px){.auth-shell{grid-template-columns:1fr}.auth-art{display:none}.sidebar{display:none}.main{margin-left:0}.mobile-nav{display:flex;gap:6px;overflow:auto;padding:8px 16px;border-bottom:1px solid var(--line);background:#07131f}.cards{grid-template-columns:1fr}.grid-2,.settings-list,.row,.review,.filters,.summary-strip{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.topbar{padding:0 16px}.content{padding:18px}}
+    .lang-btn{min-width:52px}
+    html[dir="rtl"] body{text-align:right}
+    html[dir="rtl"] .sidebar{left:auto;right:0;border-right:0;border-left:1px solid var(--line)}
+    html[dir="rtl"] .main{margin-left:0;margin-right:250px}
+    html[dir="rtl"] .nav button{text-align:right}
+    html[dir="rtl"] .nav button.active{box-shadow:inset -3px 0 0 var(--brand)}
+    html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
+    html[dir="rtl"] .live-dot{margin-right:0;margin-left:6px}
+    html[dir="rtl"] .toast{right:auto;left:22px}
+    html[dir="rtl"] .wizard-foot{flex-direction:row-reverse}
+    @media(max-width:950px){.auth-shell{grid-template-columns:1fr}.auth-art{display:none}.sidebar{display:none}.main{margin-left:0;margin-right:0}.mobile-nav{display:flex;gap:6px;overflow:auto;padding:8px 16px;border-bottom:1px solid var(--line);background:#07131f}.cards{grid-template-columns:1fr}.grid-2,.settings-list,.row,.review,.filters,.summary-strip{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.topbar{padding:0 16px}.content{padding:18px}}
   </style>
 </head>
 <body>
@@ -45,6 +55,7 @@
   </div>
   <div class="auth-form-wrap">
     <div class="auth-card">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button id="authLanguageToggle" class="btn ghost small lang-btn" type="button">العربية</button></div>
       <div class="eyebrow">Welcome back</div><h2>Sign in</h2><p>Use your Social Automations account to continue.</p>
       <form id="loginForm">
         <div class="field"><label>Email</label><input id="loginEmail" type="email" required autocomplete="username" placeholder="you@company.com"></div>
@@ -62,7 +73,7 @@
     <div class="sidebar-foot"><div id="userEmail" class="user-email"></div><div id="userRole" class="user-role"></div><button id="logoutBtn" class="btn ghost small" style="margin-top:11px;width:100%">Sign out</button></div>
   </aside>
   <main class="main">
-    <header class="topbar"><div><div id="topTitle" class="top-title">Overview</div><div id="topSub" class="top-sub">Your Instagram automation workspace</div></div><div class="account-pill"><div class="account-avatar">IG</div><div><div id="accountName" class="account-name">Connecting…</div><div id="accountMeta" class="account-meta">Instagram Professional account</div></div></div></header>
+    <header class="topbar"><div><div id="topTitle" class="top-title">Overview</div><div id="topSub" class="top-sub">Your Instagram automation workspace</div></div><div class="toolbar"><button id="languageToggle" class="btn ghost small lang-btn" type="button">العربية</button><div class="account-pill"><div class="account-avatar">IG</div><div><div id="accountName" class="account-name">Connecting…</div><div id="accountMeta" class="account-meta">Instagram Professional account</div></div></div></div></header>
     <div class="mobile-nav"><button class="btn secondary small" data-view="overview">Overview</button><button class="btn secondary small" data-view="automations">Automations</button><button class="btn secondary small" data-view="activity">Activity</button><button class="btn secondary small" data-view="settings">Settings</button></div>
     <div class="content">
       <section id="view-connect" class="view">
@@ -96,7 +107,7 @@
         </div>
         <div class="grid-2">
           <div class="panel"><div class="panel-head"><h3>Instagram connection</h3><span class="status">Connected</span></div><div class="panel-body"><div class="connected"><div class="ig-icon">IG</div><div><div id="overviewAccount" style="font-weight:850">Instagram</div><div id="overviewAccountMeta" class="top-sub">Professional account</div></div></div></div></div>
-          <div class="panel"><div class="panel-head"><h3>Value snapshot</h3><button class="btn ghost small" data-view="activity">Open activity</button></div><div class="panel-body"><div class="summary-strip" style="grid-template-columns:repeat(3,1fr);margin:0"><div class="summary-mini"><div class="metric-label">UNIQUE CONTACTS</div><div id="metricUniqueContacts" class="metric-value">0</div></div><div class="summary-mini"><div class="metric-label">ACTIVE AUTOMATIONS</div><div id="metricActive" class="metric-value">0</div></div><div class="summary-mini"><div class="metric-label">FAILURES</div><div id="metricFailures" class="metric-value">0</div></div></div></div></div>
+          <div class="panel"><div class="panel-head"><h3>Value snapshot</h3><button class="btn ghost small" data-view="activity">Open activity</button></div><div class="panel-body"><div class="summary-strip" style="grid-template-columns:repeat(4,1fr);margin:0"><div class="summary-mini"><div class="metric-label">FOLLOWERS</div><div id="metricFollowers" class="metric-value">—</div></div><div class="summary-mini"><div class="metric-label">UNIQUE CONTACTS</div><div id="metricUniqueContacts" class="metric-value">0</div></div><div class="summary-mini"><div class="metric-label">ACTIVE AUTOMATIONS</div><div id="metricActive" class="metric-value">0</div></div><div class="summary-mini"><div class="metric-label">FAILURES</div><div id="metricFailures" class="metric-value">0</div></div></div></div></div>
         </div>
         <div class="panel" style="margin-top:18px"><div class="panel-head"><h3>Recent automations</h3><button class="btn ghost small" data-view="automations">View all</button></div><div class="panel-body"><div id="overviewAutomations" class="automation-list"></div></div></div>
       </section>
@@ -168,22 +179,255 @@
     activityDelivery:"",
     reportAutomationId:null,
     currentView:"overview",
-    refreshTimer:null
+    refreshTimer:null,
+    lang:localStorage.getItem("ssa_lang")||"en"
   };
 
   const $=id=>document.getElementById(id);
   const qa=s=>[...document.querySelectorAll(s)];
 
+  const AR={
+    "Social Automations":"أتمتة التواصل الاجتماعي",
+    "Simple automation. Zero noise.":"أتمتة بسيطة، بدون تعقيد.",
+    "Sign in to manage Instagram comment triggers, automatic replies, and private messages from one clean workspace.":"سجّل الدخول لإدارة محفزات تعليقات إنستغرام والردود التلقائية والرسائل الخاصة من مكان واحد.",
+    "Welcome back":"مرحباً بعودتك",
+    "Sign in":"تسجيل الدخول",
+    "Use your Social Automations account to continue.":"استخدم حساب Social Automations للمتابعة.",
+    "Email":"البريد الإلكتروني",
+    "Password":"كلمة المرور",
+    "Overview":"نظرة عامة",
+    "Automations":"الأتمتة",
+    "Activity":"النشاط",
+    "Settings":"الإعدادات",
+    "Sign out":"تسجيل الخروج",
+    "Your Instagram automation workspace":"مساحة عمل أتمتة إنستغرام",
+    "Instagram Professional account":"حساب إنستغرام احترافي",
+    "Connect Instagram":"ربط إنستغرام",
+    "Connect the Instagram Professional account you want to automate.":"اربط حساب إنستغرام الاحترافي الذي تريد أتمتته.",
+    "Step 1":"الخطوة 1",
+    "Connect your Instagram account":"اربط حساب إنستغرام",
+    "Personal Instagram accounts are not supported by the Meta professional-account API.":"الحسابات الشخصية غير مدعومة؛ يلزم حساب Business أو Creator.",
+    "See the work SaaSprite handled for you in the last 30 days.":"شاهد العمل الذي تولّت SaaSprite إنجازه عنك خلال آخر 30 يوماً.",
+    "Live":"مباشر",
+    "Updated just now":"تم التحديث الآن",
+    "+ Create automation":"+ إنشاء أتمتة",
+    "Attention needed":"بحاجة إلى انتباه",
+    "Some automation actions failed.":"فشلت بعض إجراءات الأتمتة.",
+    "View failures":"عرض الأخطاء",
+    "COMMENTS HANDLED":"التعليقات التي تمت معالجتها",
+    "Automated comment events":"تعليقات تولّت المنصة التعامل معها",
+    "PUBLIC REPLIES":"الردود العامة",
+    "Replies sent automatically":"ردود أُرسلت تلقائياً",
+    "DMS SENT":"الرسائل الخاصة",
+    "Private replies delivered":"رسائل خاصة تم إرسالها",
+    "EST. TIME SAVED":"الوقت الموفّر تقديرياً",
+    "Based on your manual handling estimate":"بناءً على تقدير وقت المعالجة اليدوية",
+    "Instagram connection":"اتصال إنستغرام",
+    "Connected":"متصل",
+    "Professional account":"حساب احترافي",
+    "Value snapshot":"ملخص القيمة",
+    "Open activity":"فتح النشاط",
+    "FOLLOWERS":"المتابعون",
+    "UNIQUE CONTACTS":"جهات اتصال فريدة",
+    "ACTIVE AUTOMATIONS":"الأتمتة النشطة",
+    "FAILURES":"الأخطاء",
+    "Recent automations":"الأتمتة الأخيرة",
+    "View all":"عرض الكل",
+    "Manage active, paused, and archived automations without losing their history.":"أدر الأتمتة النشطة والمتوقفة والمؤرشفة دون فقدان سجلها.",
+    "+ New automation":"+ أتمتة جديدة",
+    "Search automations":"البحث في الأتمتة",
+    "Status":"الحالة",
+    "All automations":"كل الأتمتة",
+    "Active":"نشطة",
+    "Paused":"متوقفة",
+    "Archived":"مؤرشفة",
+    "Search and filter the work your automations handled.":"ابحث وصفِّ العمل الذي تولّت الأتمتة إنجازه.",
+    "Auto-refreshing":"تحديث تلقائي",
+    "Refresh":"تحديث",
+    "MATCHING EVENTS":"النتائج المطابقة",
+    "TIME SAVED":"الوقت الموفّر",
+    "Search":"بحث",
+    "Automation":"الأتمتة",
+    "Any status":"أي حالة",
+    "Processed":"تمت المعالجة",
+    "Failed":"فشل",
+    "Scope":"النطاق",
+    "Any scope":"أي نطاق",
+    "Specific":"مخصص",
+    "Global":"عام",
+    "Period":"الفترة",
+    "7 days":"7 أيام",
+    "30 days":"30 يوماً",
+    "90 days":"90 يوماً",
+    "1 year":"سنة",
+    "All time":"كل الوقت",
+    "Clear":"مسح",
+    "Time":"الوقت",
+    "User":"المستخدم",
+    "Comment":"التعليق",
+    "Public reply":"الرد العام",
+    "DM":"رسالة خاصة",
+    "Automation report":"تقرير الأتمتة",
+    "Performance and saved effort for this automation.":"أداء الأتمتة والجهد الذي وفّرته.",
+    "Back to automations":"العودة إلى الأتمتة",
+    "Activity history":"سجل النشاط",
+    "Account connection, workspace access, and value-estimation settings.":"إعدادات الاتصال بالحساب والوصول وتقدير القيمة.",
+    "Connected account":"الحساب المتصل",
+    "Reconnect":"إعادة الربط",
+    "Disconnect":"قطع الاتصال",
+    "Value estimate":"تقدير القيمة",
+    "Manual handling time":"وقت المعالجة اليدوية",
+    "How long would it usually take your team to manually handle one comment?":"كم يستغرق فريقك عادةً لمعالجة تعليق واحد يدوياً؟",
+    "Seconds per comment":"ثوانٍ لكل تعليق",
+    "Save estimate":"حفظ التقدير",
+    "Account":"الحساب",
+    "Signed in as":"مسجل الدخول باسم",
+    "Create automation":"إنشاء أتمتة",
+    "Set it up in four small steps.":"أعدّها بأربع خطوات بسيطة.",
+    "Cancel":"إلغاء",
+    "1 · Content":"1 · المحتوى",
+    "2 · Trigger":"2 · المحفز",
+    "3 · Actions":"3 · الإجراءات",
+    "4 · Review":"4 · المراجعة",
+    "Automation name":"اسم الأتمتة",
+    "Post / Reel":"منشور / Reel",
+    "Any post or reel":"أي منشور أو Reel",
+    "All posts & Reels (global fallback)":"كل المنشورات وReels (قاعدة عامة)",
+    "Choose one item to keep this automation specific to that content.":"اختر محتوى محدداً إذا أردت تخصيص هذه الأتمتة له.",
+    "Match type":"نوع المطابقة",
+    "Exact phrase":"عبارة مطابقة تماماً",
+    "Comment contains phrase":"التعليق يحتوي العبارة",
+    "Any comment":"أي تعليق",
+    "Priority":"الأولوية",
+    "Higher wins only when multiple rules at the same scope match. A matching specific Post/Reel rule always beats a global rule.":"الأولوية الأعلى تفوز عند تطابق عدة قواعد ضمن النطاق نفسه. القاعدة المخصصة للمحتوى تتقدم دائماً على القاعدة العامة.",
+    "Trigger phrases — one per line":"عبارات المحفز — عبارة بكل سطر",
+    "Send public reply":"إرسال رد عام",
+    "Send private DM":"إرسال رسالة خاصة",
+    "Activate after saving":"تفعيل بعد الحفظ",
+    "Public replies — one per line":"الردود العامة — رد بكل سطر",
+    "Private DM":"الرسالة الخاصة",
+    "Back":"رجوع",
+    "Delete":"حذف",
+    "Continue":"متابعة",
+    "Loading…":"جارٍ التحميل…",
+    "Report":"التقرير",
+    "Restore":"استعادة",
+    "Edit":"تعديل",
+    "Pause":"إيقاف مؤقت",
+    "Activate":"تفعيل",
+    "Archive":"أرشفة",
+    "No automations in this view.":"لا توجد أتمتة في هذا العرض.",
+    "No automations yet.":"لا توجد أتمتة بعد.",
+    "No matching activity.":"لا يوجد نشاط مطابق.",
+    "All posts & Reels":"كل المنشورات وReels",
+    "Global fallback":"قاعدة عامة",
+    "Specific content":"محتوى مخصص",
+    "handled":"تمت معالجتها",
+    "sent":"تم الإرسال",
+    "Automation setup":"إعداد الأتمتة",
+    "Create or update a rule":"إنشاء قاعدة أو تحديثها",
+    "Manage automation lifecycle and reports":"إدارة دورة حياة الأتمتة وتقاريرها",
+    "Search, filter, and measure automated work":"ابحث وصفِّ وقِس العمل المؤتمت",
+    "Account connection and value settings":"إعدادات الاتصال والقيمة",
+    "Performance and saved effort":"الأداء والجهد الموفّر",
+    "Automation activated":"تم تفعيل الأتمتة",
+    "Automation updated":"تم تحديث الأتمتة",
+    "Automation paused":"تم إيقاف الأتمتة مؤقتاً",
+    "Automation archived":"تمت أرشفة الأتمتة",
+    "Automation restored as paused":"تمت استعادة الأتمتة بحالة متوقفة",
+    "Automation deleted":"تم حذف الأتمتة",
+    "Instagram disconnected":"تم قطع اتصال إنستغرام",
+    "Time-saved estimate updated":"تم تحديث تقدير الوقت الموفّر",
+    "Save changes":"حفظ التغييرات",
+    "Activate automation":"تفعيل الأتمتة",
+    "Saving changes…":"جارٍ حفظ التغييرات…",
+    "Activating automation…":"جارٍ تفعيل الأتمتة…",
+    "Pausing automation…":"جارٍ إيقاف الأتمتة مؤقتاً…",
+    "Archiving automation…":"جارٍ أرشفة الأتمتة…",
+    "Restoring automation…":"جارٍ استعادة الأتمتة…",
+    "Deleting automation…":"جارٍ حذف الأتمتة…",
+    "Saving value estimate…":"جارٍ حفظ تقدير القيمة…",
+    "Opening Instagram…":"جارٍ فتح إنستغرام…",
+    "Disconnecting Instagram…":"جارٍ قطع اتصال إنستغرام…",
+    "Loading your workspace…":"جارٍ تحميل مساحة العمل…",
+    "Signing in…":"جارٍ تسجيل الدخول…",
+    "Loading report…":"جارٍ تحميل التقرير…",
+    "This automation has activity. Archive it instead.":"لهذه الأتمتة نشاط مسجل. قم بأرشفتها بدلاً من حذفها.",
+    "Restore this automation before editing it.":"استعد هذه الأتمتة قبل تعديلها.",
+    "Name":"الاسم",
+    "Content":"المحتوى",
+    "Trigger":"المحفز",
+    "Public replies":"الردود العامة",
+    "Off":"متوقف",
+    "Connect Instagram to continue":"اربط إنستغرام للمتابعة"
+  };
+
+  const PLACEHOLDER_AR={
+    "you@company.com":"you@company.com",
+    "Name, trigger, content…":"الاسم، المحفز، المحتوى…",
+    "Username, comment, automation, reply…":"اسم المستخدم، التعليق، الأتمتة، الرد…",
+    "e.g. Reel — Price details":"مثال: Reel — تفاصيل السعر"
+  };
+
+  function tr(text){
+    return state.lang==="ar"?(AR[text]||text):text;
+  }
+
+  function applyLanguage(){
+    const isAr=state.lang==="ar";
+    document.documentElement.lang=isAr?"ar":"en";
+    document.documentElement.dir=isAr?"rtl":"ltr";
+    localStorage.setItem("ssa_lang",state.lang);
+
+    qa("button,label,h1,h2,h3,p,option,.eyebrow,.metric-label,.metric-hint,.hint,.review-key,.top-title,.top-sub").forEach(el=>{
+      if(el.children.length>0&&el.tagName!=="OPTION")return;
+      const current=(el.textContent||"").trim();
+      if(!current)return;
+      if(!el.dataset.i18nBase&&AR[current])el.dataset.i18nBase=current;
+      const base=el.dataset.i18nBase;
+      if(base)el.textContent=isAr?(AR[base]||base):base;
+    });
+
+    qa("input[placeholder],textarea[placeholder]").forEach(el=>{
+      if(!el.dataset.placeholderBase)el.dataset.placeholderBase=el.getAttribute("placeholder")||"";
+      const base=el.dataset.placeholderBase;
+      el.setAttribute("placeholder",isAr?(PLACEHOLDER_AR[base]||base):base);
+    });
+
+    const buttonText=isAr?"EN":"العربية";
+    if($("languageToggle"))$("languageToggle").textContent=buttonText;
+    if($("authLanguageToggle"))$("authLanguageToggle").textContent=buttonText;
+
+    const titlePair=titles[state.currentView]||["Social Automations",""];
+    $("topTitle").textContent=tr(titlePair[0]);
+    $("topSub").textContent=tr(titlePair[1]);
+  }
+
+  function toggleLanguage(){
+    state.lang=state.lang==="ar"?"en":"ar";
+    applyLanguage();
+    renderAccount();
+    renderAutomations();
+    renderStats();
+    if(state.activityResult){
+      setSummary("activity",state.activityResult.summary);
+      renderActivityRows(state.activityResult.rows||[],"activityBody",true);
+    }
+    if(state.reportAutomationId&&state.currentView==="report"){
+      refreshReport(state.reportAutomationId,{silent:true});
+    }
+  }
+
   function toast(message,isError=false){
     const el=$("toast");
-    el.textContent=message;
+    el.textContent=tr(message);
     el.className="toast"+(isError?" error":"");
     clearTimeout(window.__toastTimer);
     window.__toastTimer=setTimeout(()=>el.classList.add("hidden"),3500);
   }
 
   function setBusy(show,text="Loading…"){
-    $("busyText").textContent=text;
+    $("busyText").textContent=tr(text);
     $("busyOverlay").classList.toggle("hidden",!show);
   }
 
@@ -204,11 +448,12 @@
 
   function formatDuration(seconds){
     const s=Math.max(0,Number(seconds||0));
-    if(s<60)return Math.round(s)+"s";
+    if(s<60)return state.lang==="ar"?Math.round(s)+"ث":Math.round(s)+"s";
     const minutes=Math.round(s/60);
-    if(minutes<60)return minutes+"m";
+    if(minutes<60)return state.lang==="ar"?minutes+"د":minutes+"m";
     const hours=Math.floor(minutes/60);
     const rest=minutes%60;
+    if(state.lang==="ar")return hours+"س"+(rest?" "+rest+"د":"");
     return hours+"h"+(rest?" "+rest+"m":"");
   }
 
@@ -291,51 +536,57 @@
     window.scrollTo({top:0,behavior:"smooth"});
     if(view==="activity")loadActivity().catch(error=>toast(error.message,true));
     if(view==="automations")renderAutomations();
+    applyLanguage();
   }
 
   function renderAccount(){
     const account=state.data?.account||null;
     const name=account?.username?"@"+account.username:"Not connected";
     const meta=account
-      ?[account.account_type,account.media_count!=null?account.media_count+" media":""].filter(Boolean).join(" • ")
-      :"Connect Instagram to continue";
+      ?[
+        account.account_type,
+        account.media_count!=null?(state.lang==="ar"?account.media_count+" محتوى":account.media_count+" media"):"",
+        account.followers_count!=null?(state.lang==="ar"?Number(account.followers_count).toLocaleString("ar-AE")+" متابع":Number(account.followers_count).toLocaleString("en-AE")+" followers"):""
+      ].filter(Boolean).join(" • ")
+      :tr("Connect Instagram to continue");
     ["accountName","overviewAccount","settingsAccount"].forEach(id=>$(id).textContent=name);
     ["accountMeta","overviewAccountMeta","settingsAccountMeta"].forEach(id=>$(id).textContent=meta||"Professional account");
     if($("manualReplySeconds"))$("manualReplySeconds").value=String(account?.manual_reply_seconds??45);
+    applyLanguage();
   }
 
   function automationStatus(a){
-    if(a.archived_at)return{label:"Archived",className:"paused"};
-    if(a.is_active)return{label:"Active",className:""};
-    return{label:"Paused",className:"paused"};
+    if(a.archived_at)return{label:tr("Archived"),className:"paused"};
+    if(a.is_active)return{label:tr("Active"),className:""};
+    return{label:tr("Paused"),className:"paused"};
   }
 
   function automationCard(a){
-    const trigger=a.match_mode==="any"?"Any comment":(a.trigger_phrases||[]).join(", ");
-    const scope=a.media_id?"Specific content":"Global fallback";
-    const media=a.media_label||(a.media_id?"Specific content":"All posts & Reels");
+    const trigger=a.match_mode==="any"?tr("Any comment"):(a.trigger_phrases||[]).join(", ");
+    const scope=a.media_id?tr("Specific content"):tr("Global fallback");
+    const media=a.media_label||(a.media_id?tr("Specific content"):tr("All posts & Reels"));
     const status=automationStatus(a);
     const activityCount=Number(a.activity_count||0);
 
     let actions="";
     if(activityCount>0){
-      actions+='<button class="btn ghost small" data-report="'+a.id+'">Report</button>';
+      actions+='<button class="btn ghost small" data-report="'+a.id+'">'+esc(tr("Report"))+'</button>';
     }
 
     if(a.archived_at){
-      actions+='<button class="btn ghost small" data-archive="'+a.id+'" data-archived="false">Restore</button>';
+      actions+='<button class="btn ghost small" data-archive="'+a.id+'" data-archived="false">'+esc(tr("Restore"))+'</button>';
     }else{
-      actions+='<button class="btn ghost small" data-edit="'+a.id+'">Edit</button>';
-      actions+='<button class="btn ghost small" data-toggle="'+a.id+'" data-active="'+(!a.is_active)+'">'+(a.is_active?"Pause":"Activate")+'</button>';
-      actions+='<button class="btn ghost small" data-archive="'+a.id+'" data-archived="true">Archive</button>';
+      actions+='<button class="btn ghost small" data-edit="'+a.id+'">'+esc(tr("Edit"))+'</button>';
+      actions+='<button class="btn ghost small" data-toggle="'+a.id+'" data-active="'+(!a.is_active)+'">'+esc(a.is_active?tr("Pause"):tr("Activate"))+'</button>';
+      actions+='<button class="btn ghost small" data-archive="'+a.id+'" data-archived="true">'+esc(tr("Archive"))+'</button>';
       if(activityCount===0){
-        actions+='<button class="btn danger small" data-delete="'+a.id+'">Delete</button>';
+        actions+='<button class="btn danger small" data-delete="'+a.id+'">'+esc(tr("Delete"))+'</button>';
       }
     }
 
     return '<div class="automation-row">'+
       '<div class="automation-top"><div><div class="automation-name">'+esc(a.name)+'</div>'+
-      '<div class="automation-meta">'+esc(media)+'<br>'+esc(trigger)+'<br>'+esc(scope)+' · Priority '+esc(a.priority??100)+' · '+activityCount+' handled</div></div>'+
+      '<div class="automation-meta">'+esc(media)+'<br>'+esc(trigger)+'<br>'+esc(scope)+' · '+esc(tr("Priority"))+' '+esc(a.priority??100)+' · '+activityCount+' '+esc(tr("handled"))+'</div></div>'+
       '<span class="status '+status.className+'">'+status.label+'</span></div>'+
       '<div class="automation-actions">'+actions+'</div></div>';
   }
@@ -345,7 +596,9 @@
 
     root.querySelectorAll("[data-toggle]").forEach(btn=>btn.onclick=async()=>{
       const activating=btn.dataset.active==="true";
-      if(!confirm(activating?"Activate this automation?":"Pause this automation? It will stop responding until you activate it again."))return;
+      if(!confirm(state.lang==="ar"
+        ?(activating?"هل تريد تفعيل هذه الأتمتة؟":"هل تريد إيقاف هذه الأتمتة مؤقتاً؟ لن تستجيب حتى تعيد تفعيلها.")
+        :(activating?"Activate this automation?":"Pause this automation? It will stop responding until you activate it again.")))return;
       setBusy(true,activating?"Activating automation…":"Pausing automation…");
       try{
         await api("toggle",{method:"POST",body:JSON.stringify({id:btn.dataset.toggle,is_active:activating})});
@@ -357,9 +610,13 @@
 
     root.querySelectorAll("[data-archive]").forEach(btn=>btn.onclick=async()=>{
       const archive=btn.dataset.archived==="true";
-      const question=archive
-        ?"Archive this automation? It will stop running, but its activity and reports will be kept."
-        :"Restore this automation? It will return as Paused so you can review it before activating.";
+      const question=state.lang==="ar"
+        ?(archive
+          ?"هل تريد أرشفة هذه الأتمتة؟ ستتوقف عن العمل مع الاحتفاظ بالنشاط والتقارير."
+          :"هل تريد استعادة هذه الأتمتة؟ ستعود بحالة متوقفة لتراجعها قبل التفعيل.")
+        :(archive
+          ?"Archive this automation? It will stop running, but its activity and reports will be kept."
+          :"Restore this automation? It will return as Paused so you can review it before activating.");
       if(!confirm(question))return;
       setBusy(true,archive?"Archiving automation…":"Restoring automation…");
       try{
@@ -373,7 +630,9 @@
     root.querySelectorAll("[data-report]").forEach(btn=>btn.onclick=()=>openReport(btn.dataset.report));
 
     root.querySelectorAll("[data-delete]").forEach(btn=>btn.onclick=async()=>{
-      if(!confirm("Delete this automation? This is only allowed when it has no activity."))return;
+      if(!confirm(state.lang==="ar"
+        ?"هل تريد حذف هذه الأتمتة؟ الحذف متاح فقط إذا لم يكن لها أي نشاط."
+        :"Delete this automation? This is only allowed when it has no activity."))return;
       setBusy(true,"Deleting automation…");
       try{
         const result=await api("automation&id="+encodeURIComponent(btn.dataset.delete),{method:"DELETE"});
@@ -411,20 +670,21 @@
     });
     const html=items.length
       ?items.map(automationCard).join("")
-      :'<div class="empty">No automations in this view.</div>';
+      :'<div class="empty">'+esc(tr("No automations in this view."))+'</div>';
     $("automationList").innerHTML=html;
     bindAutomationActions($("automationList"));
 
     const recent=all.filter(a=>!a.archived_at).slice(0,3);
     $("overviewAutomations").innerHTML=recent.length
       ?recent.map(automationCard).join("")
-      :'<div class="empty">No automations yet.</div>';
+      :'<div class="empty">'+esc(tr("No automations yet."))+'</div>';
     bindAutomationActions($("overviewAutomations"));
+    applyLanguage();
   }
 
   function deliveryHtml(status,text){
     if(status==="sent"){
-      return '<span class="ok">sent</span>'+(text?'<div class="top-sub">'+esc(text)+'</div>':'');
+      return '<span class="ok">'+esc(tr("sent"))+'</span>'+(text?'<div class="top-sub">'+esc(text)+'</div>':'');
     }
     if(status){
       return '<span class="'+(status==="failed"?"fail":"skip")+'">'+esc(status)+'</span>';
@@ -436,7 +696,7 @@
     const body=$(targetId);
     if(!body)return;
     if(!rows.length){
-      body.innerHTML='<tr><td colspan="'+(includeAutomation?7:6)+'" style="text-align:center;color:#94a8bf;padding:24px">No matching activity.</td></tr>';
+      body.innerHTML='<tr><td colspan="'+(includeAutomation?7:6)+'" style="text-align:center;color:#94a8bf;padding:24px">'+esc(tr("No matching activity."))+'</td></tr>';
       return;
     }
     body.innerHTML=rows.map(row=>{
@@ -444,7 +704,7 @@
         ?'<td>'+esc(row.automation_name_snapshot||"Automation")+'<div class="top-sub">'+esc(row.matched_scope||"")+'</div></td>'
         :"";
       return '<tr>'+
-        '<td>'+esc(new Date(row.created_at).toLocaleString())+'</td>'+
+        '<td>'+esc(new Date(row.created_at).toLocaleString(state.lang==="ar"?"ar-AE":"en-AE"))+'</td>'+
         automation+
         '<td>@'+esc(row.commenter_username||"unknown")+'</td>'+
         '<td>'+esc(row.comment_text||"")+'</td>'+
@@ -453,6 +713,7 @@
         '<td class="'+(row.status==="processed"?"ok":row.status==="failed"?"fail":"skip")+'">'+esc(row.status||"")+'</td>'+
       '</tr>';
     }).join("");
+    applyLanguage();
   }
 
   function setSummary(prefix,summary){
@@ -477,6 +738,9 @@
     $("metricPublicReplies").textContent=String(summary.public_replies||0);
     $("metricDms").textContent=String(summary.dms||0);
     $("metricTimeSaved").textContent=formatDuration(summary.estimated_seconds_saved||0);
+    $("metricFollowers").textContent=state.data?.account?.followers_count!=null
+      ?Number(state.data.account.followers_count).toLocaleString(state.lang==="ar"?"ar-AE":"en-AE")
+      :"—";
     $("metricUniqueContacts").textContent=String(summary.unique_contacts||0);
     $("metricFailures").textContent=String(summary.failures||0);
     $("metricActive").textContent=String(automations.filter(a=>a.is_active&&!a.archived_at).length);
@@ -493,13 +757,14 @@
   function renderMedia(){
     const select=$("wMedia");
     const current=select.value;
-    select.innerHTML='<option value="">All posts & Reels (global fallback)</option>'+
+    select.innerHTML='<option value="">'+esc(tr("All posts & Reels (global fallback)"))+'</option>'+
       state.media.map(media=>{
         const caption=(media.caption||"").replace(/\s+/g," ").trim().slice(0,80);
         const label=(media.media_product_type||media.media_type||"POST")+(caption?" — "+caption:"");
         return '<option value="'+esc(media.id)+'">'+esc(label)+'</option>';
       }).join("");
     if([...select.options].some(option=>option.value===current))select.value=current;
+    applyLanguage();
   }
 
   async function loadMedia(){
@@ -513,7 +778,7 @@
     if(!select)return;
     const current=select.value;
     const automations=state.data?.automations||[];
-    select.innerHTML='<option value="">All automations</option>'+
+    select.innerHTML='<option value="">'+esc(tr("All automations"))+'</option>'+
       automations.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.name)+'</option>').join("");
     if([...select.options].some(option=>option.value===current))select.value=current;
   }
@@ -550,8 +815,8 @@
     if(!silent)setBusy(true,"Loading report…");
     try{
       const result=await api("activity&automation_id="+encodeURIComponent(id)+"&days=0");
-      $("reportTitle").textContent=automation.name+" — Report";
-      $("reportSubtitle").textContent=(automation.media_label||"All posts & Reels")+" · "+(automation.archived_at?"Archived":automation.is_active?"Active":"Paused");
+      $("reportTitle").textContent=automation.name+" — "+tr("Report");
+      $("reportSubtitle").textContent=(automation.media_label||tr("All posts & Reels"))+" · "+tr(automation.archived_at?"Archived":automation.is_active?"Active":"Paused");
       $("reportMeta").textContent=(automation.activity_count||0)+" total handled";
       $("reportHandled").textContent=String(result.summary?.handled||0);
       $("reportPublic").textContent=String(result.summary?.public_replies||0);
@@ -583,9 +848,9 @@
       renderActivityRows(state.data.activity||[],"activityBody",true);
       const failures=Number(state.data?.summary?.failures||0);
       $("attentionBanner").classList.toggle("hidden",failures===0);
-      $("attentionText").textContent=failures===1
-        ?"1 automation action failed in the last 30 days."
-        :failures+" automation actions failed in the last 30 days.";
+      $("attentionText").textContent=state.lang==="ar"
+        ?(failures===1?"فشل إجراء أتمتة واحد خلال آخر 30 يوماً.":"فشلت "+failures+" إجراءات أتمتة خلال آخر 30 يوماً.")
+        :(failures===1?"1 automation action failed in the last 30 days.":failures+" automation actions failed in the last 30 days.");
       markQuietRefresh();
     }else{
       $("automationList").innerHTML='<div class="empty">Connect Instagram first.</div>';
@@ -661,14 +926,14 @@
       :$("wMatchMode").value+": "+lines($("wTriggers").value).join(", ");
     const scope=$("wMedia").value?"Specific content":"Global fallback";
     $("reviewGrid").innerHTML=
-      reviewValue("Name",$("wName").value.trim())+
-      reviewValue("Content",content)+
-      reviewValue("Scope",scope)+
-      reviewValue("Priority",$("wPriority").value||"100")+
-      reviewValue("Trigger",trigger)+
-      reviewValue("Public replies",$("wSendPublic").checked?lines($("wReplies").value).join("\n"):"Off")+
-      reviewValue("Private DM",$("wSendPrivate").checked?$("wDmText").value.trim():"Off")+
-      reviewValue("Status",$("wActive").checked?"Active":"Paused");
+      reviewValue(tr("Name"),$("wName").value.trim())+
+      reviewValue(tr("Content"),content)+
+      reviewValue(tr("Scope"),scope)+
+      reviewValue(tr("Priority"),$("wPriority").value||"100")+
+      reviewValue(tr("Trigger"),trigger)+
+      reviewValue(tr("Public replies"),$("wSendPublic").checked?lines($("wReplies").value).join("\n"):tr("Off"))+
+      reviewValue(tr("Private DM"),$("wSendPrivate").checked?$("wDmText").value.trim():tr("Off"))+
+      reviewValue(tr("Status"),$("wActive").checked?tr("Active"):tr("Paused"));
   }
 
   function renderWizard(){
@@ -684,6 +949,7 @@
     $("publicRepliesField").classList.toggle("hidden",!$("wSendPublic").checked);
     $("dmField").classList.toggle("hidden",!$("wSendPrivate").checked);
     if(state.wizardStep===4)renderReview();
+    applyLanguage();
   }
 
   async function saveAutomation(){
@@ -722,6 +988,9 @@
       }catch(error){console.warn("Silent auto-refresh failed",error)}
     },20000);
   }
+
+  $("languageToggle").onclick=toggleLanguage;
+  $("authLanguageToggle").onclick=toggleLanguage;
 
   $("loginForm").onsubmit=async event=>{
     event.preventDefault();
@@ -803,7 +1072,7 @@
   };
 
   $("wizardDeleteBtn").onclick=async()=>{
-    if(!state.editingId||!confirm("Delete this automation?"))return;
+    if(!state.editingId||!confirm(state.lang==="ar"?"هل تريد حذف هذه الأتمتة؟":"Delete this automation?"))return;
     setBusy(true,"Deleting automation…");
     try{
       const result=await api("automation&id="+encodeURIComponent(state.editingId),{method:"DELETE"});
@@ -820,7 +1089,9 @@
 
   $("saveValueSettingsBtn").onclick=async()=>{
     const seconds=Number($("manualReplySeconds").value||45);
-    if(!confirm("Save "+seconds+" seconds as the estimated manual handling time per comment?"))return;
+    if(!confirm(state.lang==="ar"
+      ?"هل تريد حفظ "+seconds+" ثانية كتقدير لوقت المعالجة اليدوية لكل تعليق؟"
+      :"Save "+seconds+" seconds as the estimated manual handling time per comment?"))return;
     setBusy(true,"Saving value estimate…");
     try{
       await api("value_settings",{method:"POST",body:JSON.stringify({manual_reply_seconds:seconds})});
@@ -843,7 +1114,9 @@
   };
 
   $("reconnectInstagramBtn").onclick=async()=>{
-    if(!confirm("Reconnect Instagram? You will be sent to Instagram to authorize the account again."))return;
+    if(!confirm(state.lang==="ar"
+      ?"هل تريد إعادة ربط إنستغرام؟ سيتم تحويلك إلى إنستغرام لإعادة منح الصلاحيات."
+      :"Reconnect Instagram? You will be sent to Instagram to authorize the account again."))return;
     setBusy(true,"Opening Instagram…");
     try{
       const result=await api("instagram_connect",{method:"POST"});
@@ -856,7 +1129,9 @@
   };
 
   $("disconnectInstagramBtn").onclick=async()=>{
-    if(!confirm("Disconnect this Instagram account? Your automations will be kept."))return;
+    if(!confirm(state.lang==="ar"
+      ?"هل تريد قطع اتصال حساب إنستغرام؟ سيتم الاحتفاظ بالأتمتة."
+      :"Disconnect this Instagram account? Your automations will be kept."))return;
     setBusy(true,"Disconnecting Instagram…");
     try{
       await api("instagram_disconnect",{method:"POST"});
@@ -885,6 +1160,7 @@
     const instagramReason=params.get("reason");
     if(instagramStatus)history.replaceState({},document.title,location.pathname);
 
+    applyLanguage();
     if(!state.session?.access_token){showAuth();return}
 
     setBusy(true,"Loading your workspace…");
