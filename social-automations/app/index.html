@@ -87,7 +87,7 @@
         </div>
       </section>
       <section id="view-overview" class="view active">
-        <div class="page-head"><div><h2>Overview</h2><p>See the work SaaSprite handled for you in the last 30 days.</p></div><div class="toolbar"><span class="top-sub"><span class="live-dot"></span>Auto-refreshing</span><button class="btn" data-new-automation>+ Create automation</button></div></div>
+        <div class="page-head"><div><h2>Overview</h2><p>See the work SaaSprite handled for you in the last 30 days.</p></div><div class="toolbar"><span id="overviewUpdatedAt" class="top-sub"><span class="live-dot"></span>Live</span><button class="btn" data-new-automation>+ Create automation</button></div></div><div id="attentionBanner" class="panel hidden" style="margin-bottom:14px;border-color:#6e4a25"><div class="panel-body" style="display:flex;justify-content:space-between;gap:12px;align-items:center"><div><div style="font-weight:850">Attention needed</div><div id="attentionText" class="top-sub">Some automation actions failed.</div></div><button id="viewFailuresBtn" class="btn ghost small">View failures</button></div></div>
         <div class="cards">
           <div class="card metric clickable" data-dashboard-metric="handled"><div class="metric-label">COMMENTS HANDLED</div><div id="metricHandled" class="metric-value">0</div><div class="metric-hint">Automated comment events</div></div>
           <div class="card metric clickable" data-dashboard-metric="public"><div class="metric-label">PUBLIC REPLIES</div><div id="metricPublicReplies" class="metric-value">0</div><div class="metric-hint">Replies sent automatically</div></div>
@@ -101,7 +101,8 @@
         <div class="panel" style="margin-top:18px"><div class="panel-head"><h3>Recent automations</h3><button class="btn ghost small" data-view="automations">View all</button></div><div class="panel-body"><div id="overviewAutomations" class="automation-list"></div></div></div>
       </section>
       <section id="view-automations" class="view">
-        <div class="page-head"><div><h2>Automations</h2><p>Manage active, paused, and archived automations without losing their history.</p></div><div class="toolbar"><select id="automationLifecycleFilter" class="select-small"><option value="all">All automations</option><option value="active">Active</option><option value="paused">Paused</option><option value="archived">Archived</option></select><button class="btn" data-new-automation>+ New automation</button></div></div>
+        <div class="page-head"><div><h2>Automations</h2><p>Manage active, paused, and archived automations without losing their history.</p></div><div class="toolbar"><button class="btn" data-new-automation>+ New automation</button></div></div>
+        <div class="panel" style="margin-bottom:14px"><div class="panel-body"><div class="row" style="grid-template-columns:2fr 1fr"><div class="field" style="margin:0"><label>Search automations</label><input id="automationSearch" placeholder="Name, trigger, content…"></div><div class="field" style="margin:0"><label>Status</label><select id="automationLifecycleFilter"><option value="all">All automations</option><option value="active">Active</option><option value="paused">Paused</option><option value="archived">Archived</option></select></div></div></div></div>
         <div class="panel"><div class="panel-body"><div id="automationList" class="automation-list"></div></div></div>
       </section>
       <section id="view-activity" class="view">
@@ -194,6 +195,11 @@
 
   function lines(value){
     return value.split(/\n|,/).map(v=>v.trim()).filter(Boolean);
+  }
+
+  function markQuietRefresh(){
+    const el=$("overviewUpdatedAt");
+    if(el)el.innerHTML='<span class="live-dot"></span>Updated just now';
   }
 
   function formatDuration(seconds){
@@ -338,17 +344,23 @@
     root.querySelectorAll("[data-edit]").forEach(btn=>btn.onclick=()=>openWizard(btn.dataset.edit));
 
     root.querySelectorAll("[data-toggle]").forEach(btn=>btn.onclick=async()=>{
-      setBusy(true,btn.dataset.active==="true"?"Activating automation…":"Pausing automation…");
+      const activating=btn.dataset.active==="true";
+      if(!confirm(activating?"Activate this automation?":"Pause this automation? It will stop responding until you activate it again."))return;
+      setBusy(true,activating?"Activating automation…":"Pausing automation…");
       try{
-        await api("toggle",{method:"POST",body:JSON.stringify({id:btn.dataset.toggle,is_active:btn.dataset.active==="true"})});
+        await api("toggle",{method:"POST",body:JSON.stringify({id:btn.dataset.toggle,is_active:activating})});
         await loadWorkspace();
-        toast("Automation updated");
+        toast(activating?"Automation activated":"Automation paused");
       }catch(error){toast(error.message,true)}
       finally{setBusy(false)}
     });
 
     root.querySelectorAll("[data-archive]").forEach(btn=>btn.onclick=async()=>{
       const archive=btn.dataset.archived==="true";
+      const question=archive
+        ?"Archive this automation? It will stop running, but its activity and reports will be kept."
+        :"Restore this automation? It will return as Paused so you can review it before activating.";
+      if(!confirm(question))return;
       setBusy(true,archive?"Archiving automation…":"Restoring automation…");
       try{
         await api("archive",{method:"POST",body:JSON.stringify({id:btn.dataset.archive,archived:archive})});
@@ -379,10 +391,22 @@
   function renderAutomations(){
     const all=state.data?.automations||[];
     const filter=$("automationLifecycleFilter")?.value||"all";
+    const search=($("automationSearch")?.value||"").trim().toLowerCase();
     const items=all.filter(a=>{
-      if(filter==="active")return !a.archived_at&&a.is_active;
-      if(filter==="paused")return !a.archived_at&&!a.is_active;
-      if(filter==="archived")return !!a.archived_at;
+      if(filter==="active"&& (a.archived_at||!a.is_active))return false;
+      if(filter==="paused"&& (a.archived_at||a.is_active))return false;
+      if(filter==="archived"&&!a.archived_at)return false;
+      if(search){
+        const haystack=[
+          a.name,
+          a.media_label,
+          a.media_id,
+          a.match_mode,
+          ...(a.trigger_phrases||[]),
+          a.media_id?"specific":"global"
+        ].filter(Boolean).join(" ").toLowerCase();
+        if(!haystack.includes(search))return false;
+      }
       return true;
     });
     const html=items.length
@@ -520,24 +544,32 @@
     renderActivityRows(result.rows||[],"activityBody",true);
   }
 
-  async function openReport(id){
-    state.reportAutomationId=id;
+  async function refreshReport(id,{silent=false,navigateAfter=false}={}){
     const automation=(state.data?.automations||[]).find(a=>a.id===id);
     if(!automation)return;
-    $("reportTitle").textContent=automation.name+" — Report";
-    $("reportSubtitle").textContent=(automation.media_label||"All posts & Reels")+" · "+(automation.archived_at?"Archived":automation.is_active?"Active":"Paused");
-    $("reportMeta").textContent=(automation.activity_count||0)+" total handled";
-    setBusy(true,"Loading report…");
+    if(!silent)setBusy(true,"Loading report…");
     try{
       const result=await api("activity&automation_id="+encodeURIComponent(id)+"&days=0");
+      $("reportTitle").textContent=automation.name+" — Report";
+      $("reportSubtitle").textContent=(automation.media_label||"All posts & Reels")+" · "+(automation.archived_at?"Archived":automation.is_active?"Active":"Paused");
+      $("reportMeta").textContent=(automation.activity_count||0)+" total handled";
       $("reportHandled").textContent=String(result.summary?.handled||0);
       $("reportPublic").textContent=String(result.summary?.public_replies||0);
       $("reportDms").textContent=String(result.summary?.dms||0);
       $("reportTime").textContent=formatDuration(result.summary?.estimated_seconds_saved||0);
       renderActivityRows(result.rows||[],"reportActivityBody",false);
-      navigate("report");
-    }catch(error){toast(error.message,true)}
-    finally{setBusy(false)}
+      if(navigateAfter)navigate("report");
+    }catch(error){
+      if(!silent)toast(error.message,true);
+      else console.warn("Silent report refresh failed",error);
+    }finally{
+      if(!silent)setBusy(false);
+    }
+  }
+
+  async function openReport(id){
+    state.reportAutomationId=id;
+    await refreshReport(id,{silent:false,navigateAfter:true});
   }
 
   async function loadWorkspace(){
@@ -549,6 +581,12 @@
       renderStats();
       populateActivityAutomationFilter();
       renderActivityRows(state.data.activity||[],"activityBody",true);
+      const failures=Number(state.data?.summary?.failures||0);
+      $("attentionBanner").classList.toggle("hidden",failures===0);
+      $("attentionText").textContent=failures===1
+        ?"1 automation action failed in the last 30 days."
+        :failures+" automation actions failed in the last 30 days.";
+      markQuietRefresh();
     }else{
       $("automationList").innerHTML='<div class="empty">Connect Instagram first.</div>';
       $("overviewAutomations").innerHTML='<div class="empty">Connect Instagram first.</div>';
@@ -679,9 +717,9 @@
       if(document.hidden||!state.session?.access_token||!state.data?.connected)return;
       try{
         if(state.currentView==="activity")await loadActivity();
-        else if(state.currentView==="report"&&state.reportAutomationId)await openReport(state.reportAutomationId);
+        else if(state.currentView==="report"&&state.reportAutomationId)await refreshReport(state.reportAutomationId,{silent:true});
         else if(state.currentView==="overview")await loadWorkspace();
-      }catch(error){console.warn("Auto refresh failed",error)}
+      }catch(error){console.warn("Silent auto-refresh failed",error)}
     },20000);
   }
 
@@ -726,6 +764,11 @@
   });
 
   $("automationLifecycleFilter").onchange=renderAutomations;
+  $("automationSearch").oninput=renderAutomations;
+  $("viewFailuresBtn").onclick=()=>{
+    state.activityDelivery="failed";
+    navigate("activity");
+  };
   $("refreshActivityBtn").onclick=()=>loadActivity().catch(error=>toast(error.message,true));
   $("clearActivityFiltersBtn").onclick=()=>{
     $("activitySearch").value="";
@@ -777,6 +820,7 @@
 
   $("saveValueSettingsBtn").onclick=async()=>{
     const seconds=Number($("manualReplySeconds").value||45);
+    if(!confirm("Save "+seconds+" seconds as the estimated manual handling time per comment?"))return;
     setBusy(true,"Saving value estimate…");
     try{
       await api("value_settings",{method:"POST",body:JSON.stringify({manual_reply_seconds:seconds})});
@@ -799,6 +843,7 @@
   };
 
   $("reconnectInstagramBtn").onclick=async()=>{
+    if(!confirm("Reconnect Instagram? You will be sent to Instagram to authorize the account again."))return;
     setBusy(true,"Opening Instagram…");
     try{
       const result=await api("instagram_connect",{method:"POST"});
